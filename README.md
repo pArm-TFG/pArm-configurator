@@ -52,3 +52,4 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
 ## Otros recursos
 
 + *[Learn LaTeX in 30 minutes](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes)*
++  [Video del funcionamiento del brazo robótico](https://www.youtube.com/watch?v=VeZOi11NQRA)
