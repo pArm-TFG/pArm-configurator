@@ -48,3 +48,7 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
   - [ ] Función que devuelva una lista de coordinadas articulares las cuales, aplicadas en secuencia, permiten hacer que el manipulador describa una determinada trayectoria (función matemática).
 
 - [ ] Representación gráfica de los resultados.
+
+## Otros recursos
+
++ *[Learn LaTeX in 30 minutes](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes)*
