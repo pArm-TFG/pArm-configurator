@@ -27,12 +27,14 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
 ## *TO-DO*
 
 - [x] Repositorio de GitHub y organización general.
-- [ ] Configuración geométrica
-  - [ ] Definición de referenciales.
-  - [ ] Tabla de parámetros de [Denavit–Hartenberg](https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters).
+- [x] Configuración geométrica
+  - [x] Definición de referenciales.
+  - [x] Tabla de parámetros de [Denavit–Hartenberg](https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters).
+
+- [ ] Entender el funcionamiento de los manipuladores pantográficos.
 
 - [ ] Cinemática directa del manipulador.
-  - [ ] Estudio de los casos: <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;0),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;0),&space;\vec{q}&space;=&space;(-\pi/2,&space;\pi/2,&space;a)&space;\vec{q}=&space;(\pi,&space;0,&space;a/2)" title="\vec{q} = (0, 0, 0), \vec{q} = (0, \pi/2, 0), \vec{q} = (-\pi/2, \pi/2, a) \vec{q}= (\pi, 0, a/2)" />
+  - [ ] Estudio de los casos: <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;0),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;0),&space;\vec{q}&space;=&space;(-\pi/2,&space;\pi/2,&space;a)&space;\vec{q}=&space;(\pi,&space;0,&space;a/2)" title="\vec{q} = (0, 0, 0), \vec{q} = (0, \pi/2, 0), \vec{q} = (-\pi/2, \pi/2, a), \vec{q}= (\pi, 0, a/2)" />
   - [ ] Función que implementa la cinemática directa del manipulador <img src="https://latex.codecogs.com/png.latex?A_0^3" title="A_0^3" />
 
 - [ ] Cinemática inversa
@@ -40,7 +42,7 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
   - [ ] Función que implementa dicha cinemática - devuelve una lista con todos los posibles valores de los parámetros.
 
 - [ ] Función Jacobiana
-  - [ ] Matriz Jacobiana en el estudio de los casos <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;a/2),&space;\vec{q}&space;=&space;(0,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(\pi/4,&space;-\pi/4,&space;0),&space;\vec{q}&space;=&space;(-\pi/90,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(-\pi/4,&space;\pi/4,&space;0)&space;y&space;\vec{q}&space;=&space;(\pi/90,&space;-\pi/90,&space;a/100),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;a/2),&space;\vec{q}&space;=&space;(\pi/90,&space;0,&space;-a/100)" title="\vec{q} = (0, 0, a/2), \vec{q} = (0, \pi/90, 0), \vec{q} = (\pi/4, -\pi/4, 0), \vec{q} = (-\pi/90, \pi/90, 0), \vec{q} = (-\pi/4, \pi/4, 0) y \vec{q} = (\pi/90, -\pi/90, a/100), \vec{q} = (0, \pi/2, a/2), \vec{q} = (\pi/90, 0, -a/100)" /> y su expresión gráfica.
+  - [ ] Matriz Jacobiana en el estudio de los casos <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;a/2),&space;\vec{q}&space;=&space;(0,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(\pi/4,&space;-\pi/4,&space;0),&space;\vec{q}&space;=&space;(-\pi/90,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(-\pi/4,&space;\pi/4,&space;0)&space;y&space;\vec{q}&space;=&space;(\pi/90,&space;-\pi/90,&space;a/100),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;a/2),&space;\vec{q}&space;=&space;(\pi/90,&space;0,&space;-a/100)" title="\vec{q} = (0, 0, a/2), \vec{q} = (0, \pi/90, 0), \vec{q} = (\pi/4, -\pi/4, 0), \vec{q} = (-\pi/90, \pi/90, 0), \vec{q} = (-\pi/4, \pi/4, 0), \vec{q} = (\pi/90, -\pi/90, a/100), \vec{q} = (0, \pi/2, a/2), \vec{q} = (\pi/90, 0, -a/100)" /> y su expresión gráfica.
   - [ ] Función que devuelve la matriz Jacobiana del manipulador dadas las coordenadas articulares.
 
 - [ ] Singularidades y generación de trayectorias
@@ -52,4 +54,4 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
 ## Otros recursos
 
 + *[Learn LaTeX in 30 minutes](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes)*
-+  [Video del funcionamiento del brazo robótico](https://www.youtube.com/watch?v=VeZOi11NQRA)
++  [Vídeo del funcionamiento del brazo robótico](https://www.youtube.com/watch?v=VeZOi11NQRA)
