@@ -11,6 +11,10 @@ _Práctica de Manipuladores con el robot μArm_
 
 La información relativa al enunciado de la práctica se puede encontrar en el siguiente PDF: https://github.com/UPM-Robotics/uarm/blob/master/docs/statement.pdf
 
+La memoria del proyecto se encuentra en la siguiente carpeta: https://github.com/UPM-Robotics/uarm/tree/master/docs/memory. Dicha memoria está en formato LaTeX, y se incluyen todas las librerías y ficheros necesarios para compilar el proyecto.
+
+La versión en formato PDF es accesible desde: https://github.com/UPM-Robotics/uarm/blob/master/docs/memory/memory.pdf
+
 ## Información sobre el robot
 
 _μArm Swift Pro_ es un robot creado por la empresa **UFACTORY** el cual cuenta con cuatro grados de libertad, aunque en la práctica solo usa 3 (debido a que el extremo, la pinza, está en una posición fija respecto al suelo).
