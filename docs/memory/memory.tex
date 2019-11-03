@@ -26,6 +26,7 @@
 \usepackage[style=ieee]{biblatex}
 \usepackage{csquotes}
 \usepackage{siunitx}
+\usepackage{wrapfig}
 
 \addbibresource{references.bib}
 \definecolor{darkgreen}{rgb}{0.0, 0.4, 0.0}
@@ -69,42 +70,50 @@
 %%%% SECTIONS
 \section*{Conocimientos previos}
 
+Antes de ponernos a hablar sobre los resultados obtenidos en la práctica,
+antes vamos a hablar sobre algunas características básicas del brazo robótico e
+introducirlo brevemente.
 El manipulador robótico \emph{{\textmu}Arm} es un dispositivo creado por la empresa
 \href{https://www.ufactory.cc/#/}{UFACTORY} el cual cuenta con cuatro grados de libertad.
 De dichos grados de libertad, tres son usados para mover el brazo robótico hasta ciertas
 posiciones y, el último, para mantener el extremo del mismo paralelo al suelo.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[height=10cm]{images/axis.png}
-    \caption{los grados de libertar del brazo, representados por los diferentes $Z_i$}
-    \label{fig:axis}
-\end{figure}
+\begin{wrapfigure}{R}{.4\textwidth}
+    \begin{center}
+        \includegraphics[width=.4\textwidth]{images/motors.png}
+        \caption{zonas de actuación de los motores en el brazo \cite{developer_guide_uarm}}
+        \label{fig:motors}
+    \end{center}
+\end{wrapfigure}
 
 El manipulador es controlado mediante cuatro motores:
-\begin{itemize}
-    \item El motor de la base el cual permite la rotación del manipulador.
-    \item El motor del brazo localizado a la derecha se encarga de controlar la parte baja del brazo.
-          A su vez, está igualmente conectado a la parte superior del brazo y también controla esta. 
-          De este modo, el mismo movimiento coordina la parte superior e inferior.
 
-          El movimiento de este segmento del manipulador es equivalente al de un flexo,
-          en el cual el movimiento de la parte superior está supeditado a lo que haga
-          la parte inferior, manteniendo así una inclinación constante sobre el extremo.
-    \item El otro motor, localizado a la izquierda del brazo, se encarga de mantener la
-          orientación del extremo del manipulador. De esta manera, dicho extremo
-          permanecerá paralelo al suelo. Teniendo en cuenta esto, podríamos decir
-          que el robot en verdad solo tiene tres grados de libertad en tanto a que no se
-          controla directamente el movimiento del último grado, ya que al final se mueve
-          para permanecer paralelo al suelo.
-    \item El motor localizado en el extremo, con el cual se puede actuar sobre el
-          elemento que esté colocado allí. Por ejemplo, cuando se coloca una ventosa
-          permite rotarla o, cuando se coloca la pinza, el movimiento del motor permite
-          abrirla o cerrarla.
+% \begin{itemize}
+    El \textbf{motor de la base} el cual permite la rotación del manipulador.
 
-          Para este estudio, este último motor se descartará, ya que no afecta a las
-          posiciones accesibles por el robot.
-\end{itemize}
+    En el brazo, el \textbf{motor que está a la derecha} (ver la figura \ref{fig:motors}), 
+    coordina el movimiento de la parte inferior del brazo (\textit{Lower Arm} en la figura)
+    con la parte superior del mismo (\textit{Upper Arm} en la figura).
+
+    En esta parte del manipulador, el movimiento es como el de un flexo: la parte superior
+    del flexo está supeditada a la parte inferior, de manera que se mantiene de forma
+    constante la altura a la que está el extremo final del mismo.
+
+    El otro motor, localizado a la \textbf{izquierda del brazo}, se encarga de mantener la
+    orientación del extremo del manipulador. De esta manera, dicho extremo
+    permanecerá paralelo al suelo. Teniendo en cuenta esto, podríamos decir
+    que el robot en verdad solo tiene tres grados de libertad en tanto a que no se
+    controla directamente el movimiento del último grado, ya que al final se mueve
+    para permanecer paralelo al suelo.
+
+    El \textbf{motor localizado en el extremo}, con el cual se puede actuar sobre el
+    elemento que esté colocado allí. Por ejemplo, cuando se coloca una ventosa
+    permite rotarla o, cuando se coloca la pinza, el movimiento del motor permite
+    abrirla o cerrarla.
+
+    Para este estudio, este último motor se descartará, ya que no afecta a las
+    posiciones accesibles por el robot.
+% \end{itemize}
 
 \begin{table}[ht]
     \centering
@@ -123,13 +132,6 @@ El manipulador es controlado mediante cuatro motores:
     \end{tabular}
     \caption{ángulo de giro de los motores}
 \end{table}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[height=10cm]{images/motors.png}
-    \caption{zonas de actuación de los motores en el brazo \cite{developer_guide_uarm}}
-    \label{fig:motors}
-\end{figure}
 
 \begin{figure}[H]
     \centering
@@ -152,15 +154,24 @@ Además, está detallada la siguiente bibliografía:
     \item \href{https://www.ufactory.cc/#/en/support/technology}{Soporte de UFACTORY}
 \end{itemize}
 
+\newpage
 \section{Configuración geométrica}
 
 En esta sección vamos a describir la configuración geométrica del brazo robótico. La
 configuración que obtuvimos fue la siguiente:
 \begin{figure}[H]
-    \centering
-    \includegraphics[height=4cm]{images/geometric_configuration.png}
-    \caption{configuración geométrica del robot}
-    \label{fig:robot_config}
+    \begin{minipage}{.48\linewidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{images/geometric_configuration.png}
+        \caption{configuración geométrica del robot}
+        \label{fig:robot_config}
+    \end{minipage}\hfill
+    \begin{minipage}{.48\linewidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{images/axis.png}
+        \caption{los grados de libertar del brazo, representados por los diferentes $Z_i$}
+        \label{fig:axis}
+    \end{minipage}
 \end{figure}
 
 Usando los datos que están presentes en la documentación al desarrollador \cite{developer_guide_uarm},

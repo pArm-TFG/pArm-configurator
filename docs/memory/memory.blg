@@ -1,14 +1,14 @@
 [0] Config.pm:304> INFO - This is Biber 2.12
 [0] Config.pm:307> INFO - Logfile is 'memory.blg'
-[16] biber:315> INFO - === sáb nov  2, 2019, 17:00:06
-[30] Biber.pm:371> INFO - Reading 'memory.bcf'
-[71] Biber.pm:889> INFO - Found 3 citekeys in bib section 0
-[79] Biber.pm:4093> INFO - Processing section 0
-[86] Biber.pm:4254> INFO - Looking for bibtex format file 'references.bib' for section 0
-[86] bibtex.pm:1512> INFO - LaTeX decoding ...
-[90] bibtex.pm:1329> INFO - Found BibTeX data source 'references.bib'
-[98] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
-[99] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[99] Biber.pm:3921> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'es-ES'
-[103] bbl.pm:636> INFO - Writing 'memory.bbl' with encoding 'UTF-8'
-[104] bbl.pm:739> INFO - Output to memory.bbl
+[26] biber:315> INFO - === dom nov  3, 2019, 11:24:29
+[41] Biber.pm:371> INFO - Reading 'memory.bcf'
+[85] Biber.pm:889> INFO - Found 3 citekeys in bib section 0
+[94] Biber.pm:4093> INFO - Processing section 0
+[102] Biber.pm:4254> INFO - Looking for bibtex format file 'references.bib' for section 0
+[102] bibtex.pm:1512> INFO - LaTeX decoding ...
+[107] bibtex.pm:1329> INFO - Found BibTeX data source 'references.bib'
+[116] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
+[116] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[116] Biber.pm:3921> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'es-ES'
+[120] bbl.pm:636> INFO - Writing 'memory.bbl' with encoding 'UTF-8'
+[121] bbl.pm:739> INFO - Output to memory.bbl
