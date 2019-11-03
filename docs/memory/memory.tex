@@ -63,7 +63,7 @@
     Roberto Álvarez Garrido - \href{mailto:roberto.alvarezg@alumnos.upm.es}{roberto.alvarezg@alumnos.upm.es}
 
     José Alejandro Moya Blanco - \href{mailto:alejandro.moya.blanco@alumnos.upm.es}{alejandro.moya.blanco@alumnos.upm.es}\\[1.5cm]
-    {\large \today}\\[2cm]
+    {\large Última modificación: \today}\\[2cm]
     \includegraphics[width=0.5\textwidth]{images/uarm.jpg}\\[1cm]
 \end{titlepage}
 
@@ -116,35 +116,40 @@ El manipulador es controlado mediante cuatro motores:
 % \end{itemize}
 
 \begin{table}[ht]
-    \centering
-    \begin{tabular}{||c | c||}
-        \hline
-        \textit{Motor} & \textit{Rango de trabajo} \\ [0.5ex]
-        \hline\hline
-        Base & $\ang{0} \sim \ang{180}$ \\
-        \hline
-        Derecho & $\ang{0} \sim \ang{130}$ \\
-        \hline
-        Izquierdo & $\ang{0} \sim \ang{106}$ \\
-        \hline
-        Extremo & $\ang{0} \sim \ang{180}$ \\ [1ex]
-        \hline
-    \end{tabular}
-    \caption{ángulo de giro de los motores}
+    \begin{minipage}{.49\linewidth}
+        \centering
+        \begin{tabular}{||c | c||}
+            \hline
+            \textit{Motor} & \textit{Rango de trabajo} \\ [0.5ex]
+            \hline\hline
+            Base & $\ang{0} \sim \ang{180}$ \\
+            \hline
+            Derecho & $\ang{0} \sim \ang{130}$ \\
+            \hline
+            Izquierdo & $\ang{0} \sim \ang{106}$ \\
+            \hline
+            Extremo & $\ang{0} \sim \ang{180}$ \\ [1ex]
+            \hline
+        \end{tabular}
+        \caption{ángulo de giro de los motores}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{.49\linewidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=\linewidth]{images/range.png}
+            \caption{rango del manipulador \emph{{\textmu}Arm} \cite{user_manual_uarm}}
+            \label{fig:range}
+        \end{figure}
+    \end{minipage}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[height=7cm]{images/range.png}
-    \caption{rango del manipulador \emph{{\textmu}Arm} \cite{user_manual_uarm}}
-    \label{fig:range}
-\end{figure}
-
+\newpage
 Toda la información relativa al desarrollo del proyecto puede ser encontrada en
 \href{https://github.com/UPM-Robotics/uarm}{GitHub - UPM Robotics} \cite{noauthor_upm-robotics/uarm_2019}. Allí están detallados
 los distintos hitos a conseguir así como más información sobre el robot.
 
-Además, está detallada la siguiente bibliografía:
+Además, se encuentra disponible la siguiente bibliografía:
 \begin{itemize}
     \item \href{https://github.com/UPM-Robotics/uarm/blob/master/docs/robot-information/uArm%20pro%20User%20Manual%20v1.1.0.pdf}{Manual de usuario}
     \item \href{https://github.com/UPM-Robotics/uarm/blob/master/docs/robot-information/uArm-Swift-Specifications-171012.pdf}{Especificaciones}
@@ -162,13 +167,13 @@ configuración que obtuvimos fue la siguiente:
 \begin{figure}[H]
     \begin{minipage}{.48\linewidth}
         \centering
-        \includegraphics[width=.7\linewidth]{images/geometric_configuration.png}
+        \includegraphics[width=\linewidth]{images/geometric_configuration.png}
         \caption{configuración geométrica del robot}
         \label{fig:robot_config}
     \end{minipage}\hfill
     \begin{minipage}{.48\linewidth}
         \centering
-        \includegraphics[width=.7\linewidth]{images/axis.png}
+        \includegraphics[width=\linewidth]{images/axis.png}
         \caption{los grados de libertar del brazo, representados por los diferentes $Z_i$}
         \label{fig:axis}
     \end{minipage}
