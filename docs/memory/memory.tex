@@ -32,6 +32,8 @@
 \definecolor{darkgreen}{rgb}{0.0, 0.4, 0.0}
 \setlength{\headheight}{16pt}
 
+\allowdisplaybreaks
+
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{Robótica}
@@ -236,6 +238,67 @@ De esta manera, con los datos obtenidos, obtenemos las siguientes tablas de \tex
         \caption{tabla de \textit{Denavit–Hartenberg} en función de $a_i$}
     }
 \end{table}
+
+\section{Cinemática directa}
+A continuación, con los valores obtenidos en el apartado anterior, vamos a obtener las
+distintas matrices de transformación de referenciales de manipuladores. Para ello, partimos de la
+siguiente matriz:
+
+\[
+    A_{i-1}^i = 
+    \begin{pmatrix}
+        \cos\theta_i & -\cos\alpha_i\sin\theta_i & \sin\alpha_i\sin\theta_i & a_i\cos\theta_i \\
+        \sin\theta_i & \cos\alpha_i\cos\theta_i & -\sin\alpha_i\cos\theta_i & a_i\sin\theta_i \\
+        0 & \sin\alpha_i & \cos\alpha_i & d_i \\
+        0 & 0 & 0 & 1
+    \end{pmatrix}
+\]
+
+Aplicando los distintos pasos, obtenemos:
+
+\begin{align*}
+    A_0^1 &= 
+    \begin{pmatrix}
+        \cos\theta_1 & 0 & -\sin\theta_1 & a_1\cos\theta_1 \\
+        \sin\theta_1 & 0 & \cos\theta_1 & a_1\sin\theta_1 \\
+        0 & -1 & 0 & 0 \\
+        0 & 0 & 0 & 1
+    \end{pmatrix} \\
+    A_1^2 &= 
+    \begin{pmatrix}
+        \cos\theta_2 & -\sin\theta_2 & 0 & a_2\cos\theta_2 \\
+        \sin\theta_2 & \cos\theta_2 & 0 & a_2\sen\theta_2 \\
+        0 & 0 & 1 & 13.2 \\
+        0 & 0 & 0 & 1
+    \end{pmatrix} \\
+    A_2^3 &= 
+    \begin{pmatrix}
+        \cos\theta_3 & -\sin\theta_3 & 0 & a_3\cos\theta_3 \\
+        \sin\theta_3 & \cos\theta_3 & 0 & a_3\sin\theta_3 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1
+    \end{pmatrix} \\
+    A_3^4 &=
+    \begin{pmatrix}
+        \cos\theta_4 & -\sin\theta_4 & 0 & a_4\cos\theta_4 \\
+        \sin\theta_4 & \cos\theta_4 & 0 & a_4\sin\theta_4 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1
+    \end{pmatrix}
+\end{align*}
+
+Con todas las matrices ya obtenidas, podemos calcular la matriz de
+transformación directa del manipulador:
+
+\begin{align*}
+    A_0^2 = \\
+    \begin{pmatrix}
+        \cos\theta_1\cos\theta_2 & \cos\theta_1(-\sin\theta_2) & -\sin\theta_1 & -\sin\theta_1 a_2\cos\theta_2\cos\theta_1 - 13.2\sin\theta_1 + a_1\cos\theta_1 \\
+        \sin\theta_1\cos\theta_2 & \sin\theta_1(-\sin\theta_2) & \cos\theta_1 & a_2\cos\theta_2\sin\theta_1 + 13.2\cos\theta_1 + a_1\sin\theta_1 \\
+        -\sin\theta_2 & -\cos\theta_2 & 0 & -a_2\sin\theta_2 \\
+        0 & 0 & 0 & 1
+    \end{pmatrix}
+\end{align*}
 
 \newpage
 \printbibliography
