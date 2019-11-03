@@ -184,29 +184,34 @@ configuración que obtuvimos fue la siguiente:
 Usando los datos que están presentes en la documentación al desarrollador \cite{developer_guide_uarm},
 pudimos obtener los siguientes datos para los $a_i$ (distancia entre ejes) del manipulador; además,
 descubrimos que hay una pequeña desviación $d_i$ entre las articulaciones $\{1, 2\}$:
-\begin{figure}[H]
-    \centering
-    \includegraphics[height=6cm]{images/sizes.png}
-    \caption{longitudes del brazo robótico \cite{developer_guide_uarm}}
-    \label{fig:sizes}
-\end{figure}
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|| c | c c ||}
-        \hline
-        $i$ & $a_i~(mm.)$ & $d_i~(mm.)$ \\ [0.5ex]
-        \hline\hline
-        $1$ & $106.1$ & $0$ \\
-        \hline
-        $2$ & $142$ & $13.2$ \\
-        \hline
-        $3$ & $158.8$ & $0$ \\
-        \hline
-        $4$ & $44.5$ & $0$ \\ [1ex]
-        \hline
-    \end{tabular}
-    \caption{longitudes y desviaciones del manipulador}
+\begin{table}[ht]
+    \begin{minipage}{.49\linewidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=\linewidth]{images/sizes.png}
+            \caption{longitudes del brazo robótico \cite{developer_guide_uarm}}
+            \label{fig:sizes}
+        \end{figure}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{.49\linewidth}
+        \centering
+        \begin{tabular}{|| c | c c ||}
+            \hline
+            $i$ & $a_i~(mm.)$ & $d_i~(mm.)$ \\ [0.5ex]
+            \hline\hline
+            $1$ & $106.1$ & $0$ \\
+            \hline
+            $2$ & $142$ & $13.2$ \\
+            \hline
+            $3$ & $158.8$ & $0$ \\
+            \hline
+            $4$ & $44.5$ & $0$ \\ [1ex]
+            \hline
+        \end{tabular}
+        \caption{longitudes y desviaciones del manipulador}
+    \end{minipage}
 \end{table}
 
 De esta manera, con los datos obtenidos, obtenemos las siguientes tablas de \textit{Denavit–Hartenberg}:
