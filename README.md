@@ -35,7 +35,7 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
   - [x] Definición de referenciales.
   - [x] Tabla de parámetros de [Denavit–Hartenberg](https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters).
 
-- [ ] Entender el funcionamiento de los manipuladores pantográficos.
+- [x] Entender el funcionamiento de los manipuladores pantográficos.
 
 - [ ] Cinemática directa del manipulador.
   - [ ] Estudio de los casos: <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;0),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;0),&space;\vec{q}&space;=&space;(-\pi/2,&space;\pi/2,&space;a)&space;\vec{q}=&space;(\pi,&space;0,&space;a/2)" title="\vec{q} = (0, 0, 0), \vec{q} = (0, \pi/2, 0), \vec{q} = (-\pi/2, \pi/2, a), \vec{q}= (\pi, 0, a/2)" />
