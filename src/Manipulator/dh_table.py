@@ -47,6 +47,7 @@ class DHTable:
                 assert len(value.keys()) == 4
         self.__table = table
         self.__free_params = set()
+        self.max = 0
 
     def set(self, i: int, theta: Symbol, d: Symbol, a: float, alpha: float):
         """
@@ -70,6 +71,8 @@ class DHTable:
             self.__free_params.add(theta)
         if type(d) == Symbol:
             self.__free_params.add(d)
+        if i > self.max:
+            self.max = i
 
     def get(self) -> dict:
         return self.__table

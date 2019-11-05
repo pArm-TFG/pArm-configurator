@@ -31,15 +31,26 @@ class Manipulator:
 
     def __calc_matrices(self):
         for key, value in self.params.get():
-            self.__transformation_matrices[f"A{key - 1}{key}"] =
+            self.__transformation_matrices[f"A{key - 1}{key}"] = \
+                self._matrix(theta=value["theta"],
+                             d=value['d'],
+                             a=value['a'],
+                             alpha=value["alpha"])
 
+    def apply(self, symbols: dict) -> np.array:
+        result = np.copy(self.__transformation_matrices[f"A0{self.params.max}"])
+        for x, y in np.ndindex(result.shape):
+            result[x, y] = result[x, y].evalf(subs=symbols, chop=True)
+        return result
 
-def mtr_matrix(i: int, alpha: float, a: float, d: float) -> np.array:
-    # theta = symbols(f"theta{i}")
-    theta = None
-    return np.array([[cos(theta), - cos(alpha) * sin(theta), sin(alpha) * sin(theta),
-                      a * cos(theta)],
-                     [sin(theta), cos(alpha) * cos(theta), - sin(alpha) * cos(theta),
-                      a * sin(theta)],
-                     [0, sin(alpha), cos(alpha), d],
-                     [0, 0, 0, 1]])
+    def __getitem__(self, item):
+        return self.__transformation_matrices[item]
+
+    @staticmethod
+    def _matrix(theta: Symbol, d: Symbol, a: float, alpha: float) -> np.array:
+        return np.array([[cos(theta), - cos(alpha) * sin(theta), sin(alpha) * sin(theta),
+                          a * cos(theta)],
+                         [sin(theta), cos(alpha) * cos(theta), - sin(alpha) * cos(theta),
+                          a * sin(theta)],
+                         [0, sin(alpha), cos(alpha), d],
+                         [0, 0, 0, 1]])
