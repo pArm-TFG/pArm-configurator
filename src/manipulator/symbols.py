@@ -1,4 +1,4 @@
-#                             Manipulator
+#                             src
 #                  Copyright (C) 2019 - Javinator9889
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -13,5 +13,8 @@
 #
 #     You should have received a copy of the GNU General Public License
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
-from .dh_table import Symbol
-from .dh_table import DHTable
+from sympy import Symbol
+from sympy import sin
+from sympy import cos
+from sympy import pi
+from sympy import E
