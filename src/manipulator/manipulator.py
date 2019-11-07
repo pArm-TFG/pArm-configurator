@@ -16,8 +16,10 @@
 import numpy as np
 
 from typing import Union
+from typing import Dict
+
 from sympy import latex
-from sympy import simplify
+from sympy import Matrix
 
 from . import DHTable
 from . import Symbol
@@ -29,7 +31,7 @@ from . import pi
 class Manipulator:
     def __init__(self, params: DHTable, optimize: bool = True):
         self.params = params
-        self.__transformation_matrices = {}
+        self.__transformation_matrices: Dict[str, Matrix] = {}
         self.__calc_matrices(optimize)
 
     def __calc_matrices(self, optimize: bool):
@@ -38,43 +40,37 @@ class Manipulator:
                 self._matrix(theta, d, a, alpha)
         for i in range(2, self.params.max + 1):
             self.__transformation_matrices[f"A0{i}"] = \
-                self.__transformation_matrices[f"A0{i - 1}"].dot(
-                    self.__transformation_matrices[f"A{i - 1}{i}"])
+                self.__transformation_matrices[f"A0{i - 1}"] * \
+                self.__transformation_matrices[f"A{i - 1}{i}"]
             if optimize:
-                self.__transformation_matrices[f"A0{i}"] = \
-                    np.apply_along_axis(simplify,
-                                        -1,
-                                        self.__transformation_matrices[f"A0{i}"])
+                self.__transformation_matrices[f"A0{i}"].simplify()
 
     def apply(self, symbols: dict, transformation_matrix: str = None) -> np.array:
         if transformation_matrix is None:
             transformation_matrix = f"A0{self.params.max}"
-        result = np.copy(self.__transformation_matrices[transformation_matrix])
-        for x, y in np.ndindex(result.shape):
-            result[x, y] = result[x, y].evalf(subs=symbols, chop=True)
-        return result
+        return self.__transformation_matrices[transformation_matrix].subs(symbols)
 
-    def to_latrix(self, matrix_type: str, item: str) -> str:
-        matrix = self.__transformation_matrices[item]
+    def to_latrix(self, matrix_type: str, item: Union[str, Matrix]) -> str:
+        if isinstance(item, str):
+            matrix = self.__transformation_matrices[item]
+        else:
+            matrix = item
         if len(matrix.shape) > 2:
             raise ValueError("LaTeX can display at most two dimensions")
         if matrix_type not in ('b', 'p', 'v', 'V', ''):
             raise ValueError("Matrix type must be: [b, p, v, V] or nothing ('')")
-        rv = [r"%\usepackage{amsmath}"]
-        # lines = str(matrix).replace('[', '').replace(']', '').splitlines()
-        rv += [r"\begin{" + matrix_type + "matrix}"]
+        row_values = [r"%\usepackage{amsmath}", r"\begin{" + matrix_type + "matrix}"]
         row = ""
         for x, y in np.ndindex(matrix.shape):
-            print((x, y))
             row += ' ' + latex(matrix[x, y])
             if y < (matrix.shape[1] - 1):
                 row += ' & '
             else:
                 row += r" \\"
-                rv += [row]
+                row_values += [row]
                 row = ""
-        rv += [r"\end{" + matrix_type + "matrix}"]
-        return '\n'.join(rv)
+        row_values += [r"\end{" + matrix_type + "matrix}"]
+        return '\n'.join(row_values)
 
     def __getitem__(self, item):
         return self.__transformation_matrices.get(item)
@@ -83,8 +79,8 @@ class Manipulator:
     def _matrix(theta: Union[Symbol, float],
                 d: Union[Symbol, float],
                 a: Union[Symbol, float],
-                alpha: Union[Symbol, float]) -> np.array:
-        return np.array([[cos(theta), - cos(alpha) * sin(theta), sin(alpha) * sin(theta),
+                alpha: Union[Symbol, float]) -> Matrix:
+        return Matrix([[cos(theta), - cos(alpha) * sin(theta), sin(alpha) * sin(theta),
                           a * cos(theta)],
                          [sin(theta), cos(alpha) * cos(theta), - sin(alpha) * cos(theta),
                           a * sin(theta)],

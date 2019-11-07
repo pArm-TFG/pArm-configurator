@@ -50,6 +50,23 @@ class DHTable:
         self.__table = table
         self.max = 0
 
+    @staticmethod
+    def _check_errors(theta: Union[Symbol, float],
+                      d: Union[Symbol, float],
+                      a: Union[Symbol, float],
+                      alpha: Union[Symbol, float]) -> bool:
+        return (type(theta) is Symbol and (type(d) is Symbol or type(a) is Symbol or
+                                           type(alpha) is Symbol)
+                or type(d) is Symbol and (
+                        type(theta) is Symbol or type(a) is Symbol or
+                        type(alpha) is Symbol)
+                or type(a) is Symbol and (type(d) is Symbol or type(theta) is
+                                          Symbol or
+                                          type(alpha) is Symbol)
+                or type(alpha) is Symbol and (
+                        type(d) is Symbol or type(a) is Symbol or
+                        type(theta) is Symbol))
+
     def add(self,
             theta: Union[Symbol, float],
             d: Union[Symbol, float],
@@ -71,25 +88,9 @@ class DHTable:
         :raises AttributeError when there is two or more params whose type is Symbol.
         Disable "check_attrs" for not throwing any exception.
         """
-
-        def check_errors() -> bool:
-            return (type(theta) is Symbol and (type(d) is Symbol or type(a) is Symbol or
-                                               type(alpha) is Symbol)
-                    or type(d) is Symbol and (
-                            type(theta) is Symbol or type(a) is Symbol or
-                            type(alpha) is Symbol)
-                    or type(a) is Symbol and (type(d) is Symbol or type(theta) is
-                                              Symbol or
-                                              type(alpha) is Symbol)
-                    or type(alpha) is Symbol and (
-                            type(d) is Symbol or type(a) is Symbol or
-                            type(theta) is Symbol))
-
-        error = False
         if check_attrs:
-            error = check_errors()
-        if error:
-            raise AttributeError("Only one param can be a Symbol")
+            if self._check_errors(theta, d, a, alpha):
+                raise AttributeError("Only one param can be a Symbol")
 
         self.__table.append({
             'a': a,
@@ -99,6 +100,32 @@ class DHTable:
         })
         self.max += 1
         return self
+
+    def change(self, i: int, **kwargs):
+        """
+        Changes an existing param in the Denavit-Hartenber tables. 'i' (index) must
+        exist.
+
+        :param i: the table index (from 1 to n).
+        :param kwargs: the keys to modify - [theta, d, a, alpha]
+        :raises IndexError when the 'i' does not exist.
+        """
+        i -= 1
+        for key, value in kwargs.items():
+            if key not in self.__table[i].keys():
+                raise KeyError(f"The key '{key}' is not a valid entry - it must be: "
+                               f"[theta, d, a, alpha]")
+            self.__table[i][key] = value
+
+    def remove(self, i: int) -> dict:
+        """
+        Removes an item from the Denavit-Hartenberg table.
+        :param i: the item to remove (from 1 to n).
+        :return: the removed item.
+        :raises IndexError when the item does not exists.
+        """
+        i -= 1
+        return self.__table.pop(i)
 
     def get(self) -> List[dict]:
         """

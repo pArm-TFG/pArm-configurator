@@ -23,22 +23,32 @@ from . import Manipulator
 
 def main():
     table = DHTable()
-    table.add(theta=Symbol("t1"), d=0., a=5., alpha=(pi / 2))\
-        .add(theta=Symbol("t2"), d=0., a=5, alpha=0, check_attrs=False)\
-        .add(theta=0., d=Symbol("d2"), a=0, alpha=0)\
-        .add(theta=Symbol("t4"), d=13.2, a=7., alpha=-pi / 2, check_attrs=False)
+    table.add(theta=Symbol("theta_1"), d=0, a=106.1, alpha=-(pi / 2)) \
+        .add(theta=Symbol("theta_2"), d=13.2, a=142., alpha=0) \
+        .add(theta=Symbol("theta_3"), d=0, a=158.9, alpha=0) \
+        .add(theta=Symbol("theta_4"), d=0, a=44.5, alpha=0)
     # print(table.get())
     print(table)
 
-    stt = time()
-    m = Manipulator(params=table)
-    stp = time()
-    print(f"Elapsed time for calculating matrices: {stp - stt}s")
-    print(m["A04"])
-    stt = time()
-    rs = m.apply(symbols={Symbol("t1"): 0, Symbol("t2"): 0, Symbol("d2"): pi,
-                          Symbol("t4"): pi})
-    stp = time()
-    print(f"Elapsed time for applying matrix changes: {stp - stt}s")
-    print(rs)
-    print(m.to_latrix('p', "A04"))
+    calc_times = set()
+    sub_times = set()
+    for i in range(10):
+        stt = time()
+        m = Manipulator(params=table)
+        stp = time()
+        print("Elapsed time for calculating matrices: {:.3f}s".format(stp - stt))
+        calc_times.add(stp - stt)
+        # print(m["A04"])
+        stt = time()
+        rs = m.apply(symbols={Symbol("theta_1"): 0,
+                              Symbol("theta_2"): 0,
+                              Symbol("theta_3"): pi,
+                              Symbol("theta_4"): pi})
+        stp = time()
+        print("Elapsed time for applying matrix changes: {:.3f}s".format(stp - stt))
+        sub_times.add(stp - stt)
+    print("Average calc. time: {:.3f}s".format(sum(calc_times) / 10))
+    print("Average sub. time: {:.3f}s".format(sum(sub_times) / 10))
+    # print(rs)
+    # print(m.to_latrix('p', rs))
+    # print(m.to_latrix('p', "A04"))
