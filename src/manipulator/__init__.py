@@ -17,4 +17,7 @@ from .dh_table import DHTable
 
 from .symbols import *
 
+from .utils import to_latrix
+
 from .manipulator import Manipulator
+

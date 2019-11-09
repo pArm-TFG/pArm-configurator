@@ -1,4 +1,4 @@
-#                             src
+#                             manipulator
 #                  Copyright (C) 2019 - Javinator9889
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -13,76 +13,100 @@
 #
 #     You should have received a copy of the GNU General Public License
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
-import numpy as np
-
 from typing import Union
+from typing import Tuple
 from typing import Dict
+from typing import Any
 
-from sympy import latex
 from sympy import Matrix
+from sympy import atan2
 
+from . import to_latrix
 from . import DHTable
 from . import Symbol
 from . import sin
 from . import cos
-from . import pi
 
 
-class Manipulator:
+class DirectKinematics:
     def __init__(self, params: DHTable, optimize: bool = True):
         self.params = params
-        self.__transformation_matrices: Dict[str, Matrix] = {}
-        self.__calc_matrices(optimize)
+        self.transformation_matrices: Dict[str, Matrix] = {}
+        self._calc_matrices(optimize)
 
-    def __calc_matrices(self, optimize: bool):
+    def _calc_matrices(self, optimize: bool):
         for i, theta, d, a, alpha in self.params:
-            self.__transformation_matrices[f"A{i - 1}{i}"] = \
+            self.transformation_matrices[f"A{i - 1}{i}"] = \
                 self._matrix(theta, d, a, alpha)
         for i in range(2, self.params.max + 1):
-            self.__transformation_matrices[f"A0{i}"] = \
-                self.__transformation_matrices[f"A0{i - 1}"] * \
-                self.__transformation_matrices[f"A{i - 1}{i}"]
+            self.transformation_matrices[f"A0{i}"] = \
+                self.transformation_matrices[f"A0{i - 1}"] * \
+                self.transformation_matrices[f"A{i - 1}{i}"]
             if optimize:
-                self.__transformation_matrices[f"A0{i}"].simplify()
+                self.transformation_matrices[f"A0{i}"].simplify()
 
-    def apply(self, symbols: dict, transformation_matrix: str = None) -> np.array:
-        if transformation_matrix is None:
-            transformation_matrix = f"A0{self.params.max}"
-        return self.__transformation_matrices[transformation_matrix].subs(symbols)
-
-    def to_latrix(self, matrix_type: str, item: Union[str, Matrix]) -> str:
-        if isinstance(item, str):
-            matrix = self.__transformation_matrices[item]
-        else:
-            matrix = item
-        if len(matrix.shape) > 2:
-            raise ValueError("LaTeX can display at most two dimensions")
-        if matrix_type not in ('b', 'p', 'v', 'V', ''):
-            raise ValueError("Matrix type must be: [b, p, v, V] or nothing ('')")
-        row_values = [r"%\usepackage{amsmath}", r"\begin{" + matrix_type + "matrix}"]
-        row = ""
-        for x, y in np.ndindex(matrix.shape):
-            row += ' ' + latex(matrix[x, y])
-            if y < (matrix.shape[1] - 1):
-                row += ' & '
-            else:
-                row += r" \\"
-                row_values += [row]
-                row = ""
-        row_values += [r"\end{" + matrix_type + "matrix}"]
-        return '\n'.join(row_values)
+    def point(self, symbols: Dict[Symbol, Any], matrix_index: str = None) -> Matrix:
+        if matrix_index is None:
+            matrix_index = f"A0{self.params.max}"
+        return self.transformation_matrices[matrix_index].subs(symbols)
 
     def __getitem__(self, item):
-        return self.__transformation_matrices.get(item)
+        return self.transformation_matrices.get(item)
 
     @staticmethod
     def _matrix(theta: Union[Symbol, float],
                 d: Union[Symbol, float],
                 a: Union[Symbol, float],
                 alpha: Union[Symbol, float]) -> Matrix:
-        return Matrix([[cos(theta), - cos(alpha) * sin(theta), sin(alpha) * sin(theta),
-                          a * cos(theta)],
-                         [sin(theta), cos(alpha) * cos(theta), - sin(alpha) * cos(theta),
-                          a * sin(theta)],
-                         [0, sin(alpha), cos(alpha), d],
-                         [0, 0, 0, 1]])
+        return Matrix(
+            [[cos(theta), - cos(alpha) * sin(theta), sin(alpha) * sin(theta),
+              a * cos(theta)],
+             [sin(theta), cos(alpha) * cos(theta), - sin(alpha) * cos(theta),
+              a * sin(theta)],
+             [0, sin(alpha), cos(alpha), d],
+             [0, 0, 0, 1]])
+
+
+class InverseKinematics:
+    def __init__(self, direct_kinematics: DirectKinematics):
+        def calc_add_of_squares():
+            self._add = (self.Xe ** 2) + (self.Ye ** 2) + (self.Ze ** 2)
+            self._add = self._add.simplify()
+
+        self._end_effector_matrix = direct_kinematics[f"A0{direct_kinematics.params.max}"]
+        self._phi_e = None
+        self.params = direct_kinematics.params
+        self.Xe = self._end_effector_matrix[0, 3]
+        self.Ye = self._end_effector_matrix[1, 3]
+        self.Ze = self._end_effector_matrix[2, 3]
+        calc_add_of_squares()
+
+    def set_phie(self, expression):
+        self._phi_e = expression
+
+    def solve(self, xyz: Tuple[float, float, float], phi: Symbol):
+        from sympy.solvers import nonlinsolve
+        system = [self.Xe - xyz[0], self.Ye - xyz[1], self.Ze - xyz[2], self._phi_e - phi]
+        print("Solving equations:")
+        for eq in system:
+            print("\t{}".format(str(eq)))
+        return nonlinsolve(system, list(self.params.symbols))
+
+
+class Manipulator:
+    def __init__(self, params: DHTable, optimize: bool = True):
+        self.params = params
+        self.direct_kinematics = DirectKinematics(params, optimize)
+        self.inverse_kinematics = InverseKinematics(self.direct_kinematics)
+
+    def point(self, symbols: Dict[Symbol, Any], matrix_index: str = None) -> Matrix:
+        return self.direct_kinematics.point(symbols, matrix_index)
+
+    def set_phi(self, expression):
+        self.inverse_kinematics.set_phie(expression)
+
+    def solve(self, xyz: Tuple[float, float, float], phi: Symbol):
+        return self.inverse_kinematics.solve(xyz, phi)
+
+    def to_latrix(self, matrix_type: str, matrix_index: str) -> str:
+        return to_latrix(matrix_type, self.direct_kinematics[matrix_index])

@@ -1,4 +1,4 @@
-#                             src
+#                             manipulator
 #                  Copyright (C) 2019 - Javinator9889
 #
 #    This program is free software: you can redistribute it and/or modify

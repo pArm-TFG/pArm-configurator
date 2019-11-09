@@ -48,6 +48,7 @@ class DHTable:
             for value in table:
                 assert len(value.keys()) == 4
         self.__table = table
+        self.symbols = set()
         self.max = 0
 
     @staticmethod
@@ -99,6 +100,14 @@ class DHTable:
             "theta": theta
         })
         self.max += 1
+        if type(theta) is Symbol:
+            self.symbols.add(theta)
+        if type(d) is Symbol:
+            self.symbols.add(d)
+        if type(a) is Symbol:
+            self.symbols.add(a)
+        if type(alpha) is Symbol:
+            self.symbols.add(alpha)
         return self
 
     def change(self, i: int, **kwargs):
@@ -115,7 +124,12 @@ class DHTable:
             if key not in self.__table[i].keys():
                 raise KeyError(f"The key '{key}' is not a valid entry - it must be: "
                                f"[theta, d, a, alpha]")
+            old_value = self.__table[i][key]
             self.__table[i][key] = value
+            if type(value) is Symbol:
+                if type(old_value) is Symbol:
+                    self.symbols.remove(old_value)
+                self.symbols.add(value)
 
     def remove(self, i: int) -> dict:
         """
@@ -125,7 +139,11 @@ class DHTable:
         :raises IndexError when the item does not exists.
         """
         i -= 1
-        return self.__table.pop(i)
+        item = self.__table.pop(i)
+        for key, value in item.items():
+            if type(item[key]) is Symbol:
+                self.symbols.remove(value)
+        return item
 
     def get(self) -> List[dict]:
         """
