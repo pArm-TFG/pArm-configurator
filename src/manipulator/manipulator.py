@@ -70,8 +70,8 @@ class DirectKinematics:
 class InverseKinematics:
     def __init__(self, direct_kinematics: DirectKinematics):
         def calc_add_of_squares():
-            self._add = (self.Xe ** 2) + (self.Ye ** 2) + (self.Ze ** 2)
-            self._add = self._add.simplify()
+            self.sq_points_add = (self.Xe ** 2) + (self.Ye ** 2) + (self.Ze ** 2)
+            self.sq_points_add = self.sq_points_add.simplify()
 
         self._end_effector_matrix = direct_kinematics[f"A0{direct_kinematics.params.max}"]
         self._phi_e = None

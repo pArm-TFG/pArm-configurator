@@ -13,20 +13,23 @@
 #
 #     You should have received a copy of the GNU General Public License
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
+from numpy import ndindex
 from time import time
 
 from . import DHTable
 from . import Symbol
 from . import pi
 from . import Manipulator
+from sympy import latex
 
 
 def main():
     table = DHTable()
-    table.add(theta=Symbol("theta_1"), d=0, a=106.1, alpha=-(pi / 2)) \
-        .add(theta=Symbol("theta_2"), d=13.2, a=142., alpha=0) \
+    table.add(theta=Symbol("theta_1"), d=13.2, a=106.1, alpha=-(pi / 2)) \
+        .add(theta=Symbol("theta_2"), d=0, a=142., alpha=0) \
         .add(theta=Symbol("theta_3"), d=0, a=158.9, alpha=0) \
-        .add(theta=Symbol("theta_4"), d=0, a=44.5, alpha=0)
+        .add(theta=((pi / 2) - (Symbol("theta_2") + Symbol("theta_3"))), d=0, a=44.5,
+             alpha=0)
     # print(table.get())
     print(table)
 
@@ -50,9 +53,54 @@ def main():
     # print("Average calc. time: {:.3f}s".format(sum(calc_times) / 10))
     # print("Average sub. time: {:.3f}s".format(sum(sub_times) / 10))
     m = Manipulator(params=table)
-    m.set_phi(Symbol("theta_2") + Symbol("theta_3") + Symbol("theta_4"))
-    sol = m.solve((1, 1, 1), pi / 2)
-    print(sol)
+    print(m.direct_kinematics["A04"])
+    print(m.to_latrix("p", "A04"))
+    # print(m.inverse_kinematics.Xe)
+    # print(m.inverse_kinematics.Ye)
+    # print(m.inverse_kinematics.Ze)
+    # print(m.inverse_kinematics.sq_points_add)
+    # print(((m.inverse_kinematics.Xe ** 2) + (m.inverse_kinematics.Ye ** 2)).simplify())
+    # for i, j in ndindex((m.params.max, m.params.max)):
+    # print(m.to_latrix("p", f"A{i}{j}"))
+    # print(m.to_latrix("p", "A01"))
+    # print(m.to_latrix("p", "A02"))
+    # print(m.to_latrix("p", "A03"))
+    # print(m.to_latrix("p", "A04"))
+    # print(m.to_latrix("p", "A12"))
+    # print(m.to_latrix("p", "A23"))
+    # print(m.to_latrix("p", "A34"))
+    # m.set_phi(Symbol("theta_2") + Symbol("theta_3") + Symbol("theta_4"))
+    # print(m.inverse_kinematics.sq_points_add)
+    print("Solving equations...")
+    solution = solve()
+    # solution.subs()
+    print(solution)
+    print(latex(solution))
+    # sol = m.solve((1, 1, 1), pi / 2)
+    # print(sol)
     # print(rs)
     # print(m.to_latrix('p', rs))
     # print(m.to_latrix('p', "A04"))
+
+
+def solve():
+    from sympy.solvers import nonlinsolve
+    from sympy import symbols
+    from sympy import sin, cos, pi
+
+    t2, t3, t4 = symbols("theta_2 theta_3 theta_4")
+    a1, a2, a3, a4, d1, L, Ze = symbols("a_1 a_2 a_3 a_4 d_1 L Z_e")
+    pi2 = pi / 2
+    # expr1 = a2 * cos(t2) + a3 * cos(t2 + t3) + a4 * cos(t2 + t3 + (pi2 - (t2 + t3))) + \
+    #         d1 - L
+    # print(expr1.simplify())
+    # expr2 = (a2 * sin(t2) + a1) - (a4 * sin(t2 + t3 + (pi2 - (t2 + t3))) +
+    #                                a3 * sin(t2 + t3)) - Ze
+    # print(expr2.simplify())
+    # expr1 = expr1.subs({a1: 10, a2: 10, a3: 10, d1: 0, L: 30})
+    # expr2 = expr2.subs({a1: 10, a2: 10, a3: 10, d1: 0, Ze: 30})
+    expr1 = 10 * cos(t2) + 10 * cos(t2 + t3) - 3
+    expr2 = - 1 + 10 * sin(t2) - 10 * sin(t2 + t3)
+    system = [expr1, expr2]
+    symbs = [t2, t3]
+    return nonlinsolve(system, symbs)

@@ -50,6 +50,7 @@ class DHTable:
         self.__table = table
         self.symbols = set()
         self.max = 0
+        self.__lengths = [set() for _ in range(4)]
 
     @staticmethod
     def _check_errors(theta: Union[Symbol, float],
@@ -108,6 +109,10 @@ class DHTable:
             self.symbols.add(a)
         if type(alpha) is Symbol:
             self.symbols.add(alpha)
+        self.__lengths[0].add(len(str(theta)))
+        self.__lengths[1].add(len(str(d)))
+        self.__lengths[2].add(len(str(a)))
+        self.__lengths[3].add(len(str(alpha)))
         return self
 
     def change(self, i: int, **kwargs):
@@ -163,7 +168,11 @@ class DHTable:
             yield i, element["theta"], element['d'], element['a'], element["alpha"]
 
     def __str__(self):
-        row_format = "{:>8}" * 5
+        row_format = "{}{}{}{}{}".format("{:>4}",
+                                         "{:>" + str(4 + max(self.__lengths[0])) + "}",
+                                         "{:>" + str(4 + max(self.__lengths[1])) + "}",
+                                         "{:>" + str(4 + max(self.__lengths[2])) + "}",
+                                         "{:>" + str(4 + max(self.__lengths[3])) + "}")
         result = row_format.format('i', "θᵢ", "dᵢ", "aᵢ", "αᵢ") + "\n"
         i = 1
         for values in self.__table:
