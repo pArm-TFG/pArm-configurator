@@ -20,19 +20,29 @@ from . import DHTable
 from . import Symbol
 from . import pi
 from . import Manipulator
+from . import cos
 from sympy import latex
 
 
 def main():
     table = DHTable()
-    table.add(theta=Symbol("theta_1"), d=13.2, a=106.1, alpha=-(pi / 2)) \
-        .add(theta=Symbol("theta_2"), d=0, a=142., alpha=0) \
-        .add(theta=Symbol("theta_3"), d=0, a=158.9, alpha=0) \
-        .add(theta=((pi / 2) - (Symbol("theta_2") + Symbol("theta_3"))), d=0, a=44.5,
-             alpha=0)
+    table.add(theta=Symbol("theta_1"), d=106.1, a=13.2, alpha=(pi / 2)) \
+        .add(theta=Symbol("theta_2"), d=0, a=142, alpha=pi) \
+        .add(theta=Symbol("theta_3"), d=0, a=158.9, alpha=0)
+    # \
+    # .add(theta=((pi / 2) - (Symbol("theta_2") + Symbol("theta_3"))), d=0, a=44.5,
+    #      alpha=0)
     # print(table.get())
     print(table)
-
+    table2 = DHTable()
+    table2.add(theta=Symbol("theta_1"), d=Symbol("a_1"),
+               a=Symbol("d_1"), alpha=(pi / 2), check_attrs=False) \
+        .add(theta=Symbol("theta_2"), d=0, a=Symbol("a_2"), alpha=pi, check_attrs=False) \
+        .add(theta=Symbol("theta_3"), d=0, a=Symbol("a_3"), alpha=0, check_attrs=False)
+    # \
+    # .add(theta=((pi / 2) - (Symbol("theta_2") + Symbol("theta_3"))), d=0,
+    #      a=Symbol("a_4"), alpha=0, check_attrs=False)
+    print(table2)
     # calc_times = set()
     # sub_times = set()
     # for i in range(10):
@@ -52,12 +62,34 @@ def main():
     #     sub_times.add(stp - stt)
     # print("Average calc. time: {:.3f}s".format(sum(calc_times) / 10))
     # print("Average sub. time: {:.3f}s".format(sum(sub_times) / 10))
-    m = Manipulator(params=table)
-    print(m.direct_kinematics["A04"])
-    print(m.to_latrix("p", "A04"))
-    # print(m.inverse_kinematics.Xe)
+    m2 = Manipulator(params=table)
+    m = Manipulator(params=table2)
+    # print(m.direct_kinematics["A04"])
+    print(m2.direct_kinematics["A01"])
+    print(m2.direct_kinematics["A12"])
+    print(m2.direct_kinematics["A23"])
+    print(m2.direct_kinematics["A02"])
+    print(m2.direct_kinematics["A03"])
+    print(m2.to_latrix("p", "A01"))
+    print(m2.to_latrix("p", "A12"))
+    print(m2.to_latrix("p", "A23"))
+    print(m2.to_latrix("p", "A02"))
+    print(m2.to_latrix("p", "A03"))
+    print(f"Xe: {m2.inverse_kinematics.Xe}")
     # print(m.inverse_kinematics.Ye)
-    # print(m.inverse_kinematics.Ze)
+    print(f"Ze: {m2.inverse_kinematics.Ze}")
+    Xe1 = m2.inverse_kinematics.Xe / cos(Symbol("theta_1"))
+    Ze = m2.inverse_kinematics.Ze
+    Xe12 = (Xe1 ** 2).expand()
+    Ze2 = (Ze ** 2).expand()
+    print(f"Xe': {Xe1}")
+    print(f"Xe'2: {Xe12}")
+    print(f"Ze2: {Ze2}")
+    sq_add = (Xe12 + Ze2).expand().simplify()
+    print(f"Add: {sq_add}")
+    print(f"Xe'2: {latex(Xe12)}")
+    print(f"Ze2: {latex(Ze2)}")
+    print(f"Add: {latex(sq_add)}")
     # print(m.inverse_kinematics.sq_points_add)
     # print(((m.inverse_kinematics.Xe ** 2) + (m.inverse_kinematics.Ye ** 2)).simplify())
     # for i, j in ndindex((m.params.max, m.params.max)):
@@ -71,11 +103,11 @@ def main():
     # print(m.to_latrix("p", "A34"))
     # m.set_phi(Symbol("theta_2") + Symbol("theta_3") + Symbol("theta_4"))
     # print(m.inverse_kinematics.sq_points_add)
-    print("Solving equations...")
-    solution = solve()
+    # print("Solving equations...")
+    # solution = solve()
     # solution.subs()
-    print(solution)
-    print(latex(solution))
+    # print(solution)
+    # print(latex(solution))
     # sol = m.solve((1, 1, 1), pi / 2)
     # print(sol)
     # print(rs)

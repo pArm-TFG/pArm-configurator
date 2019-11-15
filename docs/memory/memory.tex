@@ -9,6 +9,7 @@
 
 %% Useful packages
 \usepackage{amsmath}
+\usepackage{breqn}
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
@@ -91,30 +92,30 @@ posiciones y, el último, para mantener el extremo del mismo paralelo al suelo.
 El manipulador es controlado mediante cuatro motores:
 
 % \begin{itemize}
-    El \textbf{motor de la base} el cual permite la rotación del manipulador.
+El \textbf{motor de la base} el cual permite la rotación del manipulador.
 
-    En el brazo, el \textbf{motor que está a la derecha} (ver la figura \ref{fig:motors}), 
-    coordina el movimiento de la parte inferior del brazo (\textit{Lower Arm} en la figura)
-    con la parte superior del mismo (\textit{Upper Arm} en la figura).
+En el brazo, el \textbf{motor que está a la derecha} (ver la figura \ref{fig:motors}),
+coordina el movimiento de la parte inferior del brazo (\textit{Lower Arm} en la figura)
+con la parte superior del mismo (\textit{Upper Arm} en la figura).
 
-    En esta parte del manipulador, el movimiento es como el de un flexo: la parte superior
-    del flexo está supeditada a la parte inferior, de manera que se mantiene de forma
-    constante la altura a la que está el extremo final del mismo.
+En esta parte del manipulador, el movimiento es como el de un flexo: la parte superior
+del flexo está supeditada a la parte inferior, de manera que se mantiene de forma
+constante la altura a la que está el extremo final del mismo.
 
-    El otro motor, localizado a la \textbf{izquierda del brazo}, se encarga de mantener la
-    orientación del extremo del manipulador. De esta manera, dicho extremo
-    permanecerá paralelo al suelo. Teniendo en cuenta esto, podríamos decir
-    que el robot en verdad solo tiene tres grados de libertad en tanto a que no se
-    controla directamente el movimiento del último grado, ya que al final se mueve
-    para permanecer paralelo al suelo.
+El otro motor, localizado a la \textbf{izquierda del brazo}, se encarga de mantener la
+orientación del extremo del manipulador. De esta manera, dicho extremo
+permanecerá paralelo al suelo. Teniendo en cuenta esto, podríamos decir
+que el robot en verdad solo tiene tres grados de libertad en tanto a que no se
+controla directamente el movimiento del último grado, ya que al final se mueve
+para permanecer paralelo al suelo.
 
-    El \textbf{motor localizado en el extremo}, con el cual se puede actuar sobre el
-    elemento que esté colocado allí. Por ejemplo, cuando se coloca una ventosa
-    permite rotarla o, cuando se coloca la pinza, el movimiento del motor permite
-    abrirla o cerrarla.
+El \textbf{motor localizado en el extremo}, con el cual se puede actuar sobre el
+elemento que esté colocado allí. Por ejemplo, cuando se coloca una ventosa
+permite rotarla o, cuando se coloca la pinza, el movimiento del motor permite
+abrirla o cerrarla.
 
-    Para este estudio, este último motor se descartará, ya que no afecta a las
-    posiciones accesibles por el robot.
+Para este estudio, este último motor se descartará, ya que no afecta a las
+posiciones accesibles por el robot.
 % \end{itemize}
 
 \begin{table}[ht]
@@ -124,13 +125,13 @@ El manipulador es controlado mediante cuatro motores:
             \hline
             \textit{Motor} & \textit{Rango de trabajo} \\ [0.5ex]
             \hline\hline
-            Base & $\ang{0} \sim \ang{180}$ \\
+            Base           & $\ang{0} \sim \ang{180}$  \\
             \hline
-            Derecho & $\ang{0} \sim \ang{130}$ \\
+            Derecho        & $\ang{0} \sim \ang{130}$  \\
             \hline
-            Izquierdo & $\ang{0} \sim \ang{106}$ \\
+            Izquierdo      & $\ang{0} \sim \ang{106}$  \\
             \hline
-            Extremo & $\ang{0} \sim \ang{180}$ \\ [1ex]
+            Extremo        & $\ang{0} \sim \ang{180}$  \\ [1ex]
             \hline
         \end{tabular}
         \caption{ángulo de giro de los motores}
@@ -167,9 +168,9 @@ Además, se encuentra disponible la siguiente bibliografía:
 En esta sección vamos a describir la configuración geométrica del brazo robótico. La
 configuración que obtuvimos fue la siguiente:
 \begin{figure}[H]
-    \begin{minipage}{.48\linewidth}
+    \begin{minipage}{.4\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{images/geometric_configuration.png}
+        \includegraphics[width=\linewidth]{images/geometric_configuration_2.png}
         \caption{configuración geométrica del robot}
         \label{fig:robot_config}
     \end{minipage}\hfill
@@ -201,31 +202,98 @@ descubrimos que hay una pequeña desviación $d_i$ entre las articulaciones $\{1
             \hline
             $i$ & $a_i~(mm.)$ & $d_i~(mm.)$ \\ [0.5ex]
             \hline\hline
-            $1$ & $106.1$ & $0$ \\
+            $1$ & $106.1$     & $13.2$      \\
             \hline
-            $2$ & $142$ & $13.2$ \\
+            $2$ & $142$       & $0$         \\
             \hline
-            $3$ & $158.8$ & $0$ \\
+            $3$ & $158.8$     & $0$         \\
             \hline
-            $4$ & $44.5$ & $0$ \\ [1ex]
+            $4$ & $44.5$      & $0$         \\ [1ex]
             \hline
         \end{tabular}
         \caption{longitudes y desviaciones del manipulador}
     \end{minipage}
 \end{table}
 
-De esta manera, con los datos obtenidos, obtenemos las siguientes tablas de \textit{Denavit–Hartenberg}:
+De esta manera, con los datos obtenidos, generamos una primera matriz de \textit{Denavit-Hartenberg}:
 
 \begin{table}[H]
     \parbox{.45\linewidth}{
         \centering
         \begin{tabular}{ c | c c c c }
-            $i$ & $\theta_i$ & $d_i~(mm.)$ & $a_i~(mm.)$ & $\alpha_i$ \\ [0.5ex]
+            $i$ & $\theta_i$ & $d_i~(mm.)$ & $a_i~(mm.)$ & $\alpha_i$      \\ [0.5ex]
             \hline
-            $1$ & $\theta_1$ & $0$ & $106.1$ & $-\frac{\pi}{2}$ \\
-            $2$ & $\theta_2$ & $13.2$ & $142$ & $0$ \\
-            $3$ & $\theta_3$ & $0$ & $158.8$ & $0$ \\
-            $4$ & $\theta_4$ & $0$ & $44.5$ & $0$ \\ [1ex]
+            $1$ & $\theta_1$ & $13.2$      & $106.1$     & $\frac{\pi}{2}$ \\
+            $2$ & $\theta_2$ & $0$         & $142$       & $\pi$           \\
+            $3$ & $\theta_3$ & $0$         & $158.8$     & $0$             \\
+            $4$ & $\theta_4$ & $0$         & $44.5$      & $0$             \\ [1ex]
+        \end{tabular}
+        \caption{primera tabla de \textit{Denavit–Hartenberg}}
+    }
+    \hfill
+    \parbox{.45\linewidth}{
+        \centering
+        \begin{tabular}{ c | c c c c }
+            $i$ & $\theta_i$ & $d_i~(mm.)$ & $a_i~(mm.)$ & $\alpha_i$      \\ [0.5ex]
+            \hline
+            $1$ & $\theta_1$ & $d_1$       & $a_1$       & $\frac{\pi}{2}$ \\
+            $2$ & $\theta_2$ & $0$         & $a_2$       & $\pi$           \\
+            $3$ & $\theta_3$ & $0$         & $a_3$       & $0$             \\
+            $4$ & $\theta_4$ & $0$         & $a_4$       & $0$             \\ [1ex]
+        \end{tabular}
+        \caption{primera tabla de \textit{Denavit–Hartenberg} parametrizada}
+    }
+\end{table}
+
+La cuestión es que, al hacer los distintos modelos, descubrimos que debido a la orientación del brazo
+robótico, la $d_i$ está en la posición del equivalente $a_i$, en particular $d_1$ y $a_1$.
+Esto es debido a que, como se puede ver en la figura \ref{fig:axis} junto con las figuras \ref{fig:robot_config}
+y \ref{fig:sizes}, el plano sobre el que está $d_i$ es el $XZ$, lo cual nos obliga a cambiar las posiciones
+en las que existen a la vez un $a_i$ y un $d_i$, siempre y cuando ambos sean constantes, que en este caso lo son.
+De esta forma, la tabla de \textit{Denavit-Hartenberg} quedaría:
+
+\begin{table}[H]
+    \parbox{.45\linewidth}{
+        \centering
+        \begin{tabular}{ c | c c c c }
+            $i$ & $\theta_i$ & $d_i~(mm.)$ & $a_i~(mm.)$ & $\alpha_i$      \\ [0.5ex]
+            \hline
+            $1$ & $\theta_1$ & $106.1$     & $13.2$      & $\frac{\pi}{2}$ \\
+            $2$ & $\theta_2$ & $0$         & $142$       & $\pi$           \\
+            $3$ & $\theta_3$ & $0$         & $158.8$     & $0$             \\
+            $4$ & $\theta_4$ & $0$         & $44.5$      & $0$             \\ [1ex]
+        \end{tabular}
+        \caption{segunda tabla de \textit{Denavit–Hartenberg}}
+    }
+    \hfill
+    \parbox{.45\linewidth}{
+        \centering
+        \begin{tabular}{ c | c c c c }
+            $i$ & $\theta_i$ & $d_i~(mm.)$ & $a_i~(mm.)$ & $\alpha_i$      \\ [0.5ex]
+            \hline
+            $1$ & $\theta_1$ & $a_1$       & $d_1$       & $\frac{\pi}{2}$ \\
+            $2$ & $\theta_2$ & $0$         & $a_2$       & $\pi$           \\
+            $3$ & $\theta_3$ & $0$         & $a_3$       & $0$             \\
+            $4$ & $\theta_4$ & $0$         & $a_4$       & $0$             \\ [1ex]
+        \end{tabular}
+        \caption{segunda tabla de \textit{Denavit–Hartenberg} parametrizada}
+    }
+\end{table}
+
+Finalmente, el \textit{end-effector} (véase la figura \ref{fig:motors}) siempre está perpendicular
+al plano del suelo, es decir, $\phi_e = \pi$. Por eso mismo, el parámetro $i = 4$ en verdad
+está supeditado siempre al movimiento que se realice según los ángulos $\theta_2$ y $\theta_3$, así
+que no es necesario contemplarlo en la tabla de \textit{Denavit-Hartenberg}:
+
+\begin{table}[H]
+    \parbox{.45\linewidth}{
+        \centering
+        \begin{tabular}{ c | c c c c }
+            $i$ & $\theta_i$ & $d_i~(mm.)$ & $a_i~(mm.)$ & $\alpha_i$      \\ [0.5ex]
+            \hline
+            $1$ & $\theta_1$ & $106.1$     & $13.2$      & $\frac{\pi}{2}$ \\
+            $2$ & $\theta_2$ & $0$         & $142$       & $\pi$           \\
+            $3$ & $\theta_3$ & $0$         & $158.8$     & $0$             \\ [1ex]
         \end{tabular}
         \caption{tabla de \textit{Denavit–Hartenberg}}
     }
@@ -233,14 +301,13 @@ De esta manera, con los datos obtenidos, obtenemos las siguientes tablas de \tex
     \parbox{.45\linewidth}{
         \centering
         \begin{tabular}{ c | c c c c }
-            $i$ & $\theta_i$ & $d_i~(mm.)$ & $a_i~(mm.)$ & $\alpha_i$ \\ [0.5ex]
+            $i$ & $\theta_i$ & $d_i~(mm.)$ & $a_i~(mm.)$ & $\alpha_i$      \\ [0.5ex]
             \hline
-            $1$ & $\theta_1$ & $0$ & $a_1$ & $-\frac{\pi}{2}$ \\
-            $2$ & $\theta_2$ & $13.2$ & $a_2$ & $0$ \\
-            $3$ & $\theta_3$ & $0$ & $a_3$ & $0$ \\
-            $4$ & $\theta_4$ & $0$ & $a_4$ & $0$ \\ [1ex]
+            $1$ & $\theta_1$ & $a_1$       & $d_1$       & $\frac{\pi}{2}$ \\
+            $2$ & $\theta_2$ & $0$         & $a_2$       & $\pi$           \\
+            $3$ & $\theta_3$ & $0$         & $a_3$       & $0$             \\ [1ex]
         \end{tabular}
-        \caption{tabla de \textit{Denavit–Hartenberg} en función de $a_i$}
+        \caption{tabla de \textit{Denavit–Hartenberg} parametrizada}
     }
 \end{table}
 
@@ -250,60 +317,109 @@ distintas matrices de transformación de referenciales de manipuladores. Para el
 siguiente matriz:
 
 \[
-    A_{i-1}^i = 
+    A_{i-1}^i =
     \begin{pmatrix}
-        \cos\theta_i & -\cos\alpha_i\sin\theta_i & \sin\alpha_i\sin\theta_i & a_i\cos\theta_i \\
-        \sin\theta_i & \cos\alpha_i\cos\theta_i & -\sin\alpha_i\cos\theta_i & a_i\sin\theta_i \\
-        0 & \sin\alpha_i & \cos\alpha_i & d_i \\
-        0 & 0 & 0 & 1
+        \cos\theta_i & -\cos\alpha_i\sin\theta_i & \sin\alpha_i\sin\theta_i  & a_i\cos\theta_i \\
+        \sin\theta_i & \cos\alpha_i\cos\theta_i  & -\sin\alpha_i\cos\theta_i & a_i\sin\theta_i \\
+        0            & \sin\alpha_i              & \cos\alpha_i              & d_i             \\
+        0            & 0                         & 0                         & 1
     \end{pmatrix}
 \]
 
 Aplicando los distintos pasos, obtenemos:
 
 \begin{align*}
-    A_0^1 &= 
+    A_0^1 & =
     \begin{pmatrix}
-        \cos\theta_1 & 0 & -\sin\theta_1 & a_1\cos\theta_1 \\
-        \sin\theta_1 & 0 & \cos\theta_1 & a_1\sin\theta_1 \\
-        0 & -1 & 0 & 0 \\
-        0 & 0 & 0 & 1
+        \cos{\left(\theta_{1} \right)} & 0 & \sin{\left(\theta_{1} \right)}   & d_{1} \cos{\left(\theta_{1} \right)} \\
+        \sin{\left(\theta_{1} \right)} & 0 & - \cos{\left(\theta_{1} \right)} & d_{1} \sin{\left(\theta_{1} \right)} \\
+        0                              & 1 & 0                                & a_{1}                                \\
+        0                              & 0 & 0                                & 1                                    \\
     \end{pmatrix} \\
-    A_1^2 &= 
+    A_1^2 & =
     \begin{pmatrix}
-        \cos\theta_2 & -\sin\theta_2 & 0 & a_2\cos\theta_2 \\
-        \sin\theta_2 & \cos\theta_2 & 0 & a_2\sen\theta_2 \\
-        0 & 0 & 1 & 13.2 \\
-        0 & 0 & 0 & 1
+        \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{2} \right)}   & 0  & a_{2} \cos{\left(\theta_{2} \right)} \\
+        \sin{\left(\theta_{2} \right)} & - \cos{\left(\theta_{2} \right)} & 0  & a_{2} \sin{\left(\theta_{2} \right)} \\
+        0                              & 0                                & -1 & 0                                    \\
+        0                              & 0                                & 0  & 1                                    \\
     \end{pmatrix} \\
-    A_2^3 &= 
+    A_2^3 & =
     \begin{pmatrix}
-        \cos\theta_3 & -\sin\theta_3 & 0 & a_3\cos\theta_3 \\
-        \sin\theta_3 & \cos\theta_3 & 0 & a_3\sin\theta_3 \\
-        0 & 0 & 1 & 0 \\
-        0 & 0 & 0 & 1
-    \end{pmatrix} \\
-    A_3^4 &=
-    \begin{pmatrix}
-        \cos\theta_4 & -\sin\theta_4 & 0 & a_4\cos\theta_4 \\
-        \sin\theta_4 & \cos\theta_4 & 0 & a_4\sin\theta_4 \\
-        0 & 0 & 1 & 0 \\
-        0 & 0 & 0 & 1
+        \cos{\left(\theta_{3} \right)} & - \sin{\left(\theta_{3} \right)} & 0 & a_{3} \cos{\left(\theta_{3} \right)} \\
+        \sin{\left(\theta_{3} \right)} & \cos{\left(\theta_{3} \right)}   & 0 & a_{3} \sin{\left(\theta_{3} \right)} \\
+        0                              & 0                                & 1 & 0                                    \\
+        0                              & 0                                & 0 & 1                                    \\
     \end{pmatrix}
 \end{align*}
 
 Con todas las matrices ya obtenidas, podemos calcular la matriz de
-transformación directa del manipulador:
+transformación directa del manipulador (son 4 columnas, pero no cabe la matriz al completo, por eso la última columna está debajo):
 
 \begin{align*}
-    A_0^2 = \\
+    A_0^2 & =
     \begin{pmatrix}
-        \cos\theta_1\cos\theta_2 & \cos\theta_1(-\sin\theta_2) & -\sin\theta_1 & -\sin\theta_1 a_2\cos\theta_2\cos\theta_1 - 13.2\sin\theta_1 + a_1\cos\theta_1 \\
-        \sin\theta_1\cos\theta_2 & \sin\theta_1(-\sin\theta_2) & \cos\theta_1 & a_2\cos\theta_2\sin\theta_1 + 13.2\cos\theta_1 + a_1\sin\theta_1 \\
-        -\sin\theta_2 & -\cos\theta_2 & 0 & -a_2\sin\theta_2 \\
-        0 & 0 & 0 & 1
+        \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{2} \right)} \cos{\left(\theta_{1} \right)} & - \sin{\left(\theta_{1} \right)} & \left(a_{2} \cos{\left(\theta_{2} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)} \\
+        \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} \right)} & \cos{\left(\theta_{1} \right)}   & \left(a_{2} \cos{\left(\theta_{2} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)} \\
+        \sin{\left(\theta_{2} \right)}                                & - \cos{\left(\theta_{2} \right)}                              & 0                                & a_{1} + a_{2} \sin{\left(\theta_{2} \right)}                                             \\
+        0                                                             & 0                                                             & 0                                & 1                                                                                        \\
+    \end{pmatrix} \\
+    A_0^3 & =
+    \begin{pmatrix}
+        \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                          & - \sin{\left(\theta_{1} \right)} \\
+        \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                          & \cos{\left(\theta_{1} \right)}   \\
+        \sin{\left(\theta_{2} - \theta_{3} \right)}                                & - \cos{\left(\theta_{2} - \theta_{3} \right)}                                                                                                       & 0                                \\
+        0                                                                          & 0                                                                                                                                                   & 0                                \\
+                                                                                   & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)}                                    \\
+                                                                                   & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)}                                    \\
+                                                                                   & \qquad a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                                \\
+                                                                                   & \qquad 1
     \end{pmatrix}
 \end{align*}
+
+Las matrices están parametrizadas. Numéricamente, la matriz de transformación directa $A_0^3$ quedaría:
+
+\begin{align*}
+    A_0^3 & =
+    \begin{pmatrix}
+        \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                         & - \sin{\left(\theta_{1} \right)} \\
+        \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                         & \cos{\left(\theta_{1} \right)}   \\
+        \sin{\left(\theta_{2} - \theta_{3} \right)}                                & - \cos{\left(\theta_{2} - \theta_{3} \right)}                                                                                                      & 0                                \\
+        0                                                                          & 0                                                                                                                                                  & 0                                \\
+                                                                                   & \qquad \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \cos{\left(\theta_{1} \right)}                                    \\
+                                                                                   & \qquad \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \sin{\left(\theta_{1} \right)}                                    \\
+                                                                                   & \qquad 142.0 \sin{\left(\theta_{2} \right)} + 158.9 \sin{\left(\theta_{2} - \theta_{3} \right)} + 106.1                                                                               \\
+                                                                                   & \qquad 1                                                                                                                                                                              \\
+    \end{pmatrix}
+\end{align*}
+
+Finalmente, hay que añadir una traslación en el eje $Z$ (debido a la posición del \textit{end-effector})
+y en el eje $X$, ya que después de la articulación $\theta_3$ hay una extensión de $44,5~mm.$ (ver figura \ref{fig:sizes}),
+para obtener así la posición final del robot $(X_e ~ Y_e ~ Z_e)$:
+
+{\small\begin{align*}
+    A_0^3 & =
+    \begin{pmatrix}
+        \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                          & - \sin{\left(\theta_{1} \right)} \\
+        \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                          & \cos{\left(\theta_{1} \right)}   \\
+        \sin{\left(\theta_{2} - \theta_{3} \right)}                                & - \cos{\left(\theta_{2} - \theta_{3} \right)}                                                                                                       & 0                                \\
+        0                                                                          & 0                                                                                                                                                   & 0                                \\
+                                                                                   & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)} + T_X                                   \\
+                                                                                   & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)}                                    \\
+                                                                                   & \qquad a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} - T_{Z}                                                                                \\
+                                                                                   & \qquad 1
+    \end{pmatrix} \\
+    A_0^3 & =
+    \begin{pmatrix}
+        \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                         & - \sin{\left(\theta_{1} \right)} \\
+        \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                         & \cos{\left(\theta_{1} \right)}   \\
+        \sin{\left(\theta_{2} - \theta_{3} \right)}                                & - \cos{\left(\theta_{2} - \theta_{3} \right)}                                                                                                      & 0                                \\
+        0                                                                          & 0                                                                                                                                                  & 0                                \\
+                                                                                   & \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \cos{\left(\theta_{1} \right)} + 44,5                                   \\
+                                                                                   & \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \sin{\left(\theta_{1} \right)}                                    \\
+                                                                                   & 142.0 \sin{\left(\theta_{2} \right)} + 158.9 \sin{\left(\theta_{2} - \theta_{3} \right)} + 106,1 - T_Z                                                                              \\
+                                                                                   & 1                                                                                                                                                                              \\
+    \end{pmatrix}
+\end{align*}}
 
 \newpage
 \printbibliography
