@@ -329,21 +329,21 @@ siguiente matriz:
 Aplicando los distintos pasos, obtenemos:
 
 \begin{align*}
-    A_0^1 & =
+    A_0^1 &=
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} & 0 & \sin{\left(\theta_{1} \right)}   & d_{1} \cos{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} & 0 & - \cos{\left(\theta_{1} \right)} & d_{1} \sin{\left(\theta_{1} \right)} \\
         0                              & 1 & 0                                & a_{1}                                \\
         0                              & 0 & 0                                & 1                                    \\
     \end{pmatrix} \\
-    A_1^2 & =
+    A_1^2 &=
     \begin{pmatrix}
         \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{2} \right)}   & 0  & a_{2} \cos{\left(\theta_{2} \right)} \\
         \sin{\left(\theta_{2} \right)} & - \cos{\left(\theta_{2} \right)} & 0  & a_{2} \sin{\left(\theta_{2} \right)} \\
         0                              & 0                                & -1 & 0                                    \\
         0                              & 0                                & 0  & 1                                    \\
     \end{pmatrix} \\
-    A_2^3 & =
+    A_2^3 &=
     \begin{pmatrix}
         \cos{\left(\theta_{3} \right)} & - \sin{\left(\theta_{3} \right)} & 0 & a_{3} \cos{\left(\theta_{3} \right)} \\
         \sin{\left(\theta_{3} \right)} & \cos{\left(\theta_{3} \right)}   & 0 & a_{3} \sin{\left(\theta_{3} \right)} \\
@@ -355,15 +355,15 @@ Aplicando los distintos pasos, obtenemos:
 Con todas las matrices ya obtenidas, podemos calcular la matriz de
 transformación directa del manipulador (son 4 columnas, pero no cabe la matriz al completo, por eso la última columna está debajo):
 
-\begin{align*}
-    A_0^2 & =
+{\footnotesize\begin{align*}
+    A_0^2 &=
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{2} \right)} \cos{\left(\theta_{1} \right)} & - \sin{\left(\theta_{1} \right)} & \left(a_{2} \cos{\left(\theta_{2} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} \right)} & \cos{\left(\theta_{1} \right)}   & \left(a_{2} \cos{\left(\theta_{2} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{2} \right)}                                & - \cos{\left(\theta_{2} \right)}                              & 0                                & a_{1} + a_{2} \sin{\left(\theta_{2} \right)}                                             \\
         0                                                             & 0                                                             & 0                                & 1                                                                                        \\
     \end{pmatrix} \\
-    A_0^3 & =
+    A_0^3 &=
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                          & - \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                          & \cos{\left(\theta_{1} \right)}   \\
@@ -374,12 +374,12 @@ transformación directa del manipulador (son 4 columnas, pero no cabe la matriz 
                                                                                    & \qquad a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                                \\
                                                                                    & \qquad 1
     \end{pmatrix}
-\end{align*}
+\end{align*}}
 
 Las matrices están parametrizadas. Numéricamente, la matriz de transformación directa $A_0^3$ quedaría:
 
-\begin{align*}
-    A_0^3 & =
+{\footnotesize\begin{align*}
+    A_0^3 &=
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                         & - \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                         & \cos{\left(\theta_{1} \right)}   \\
@@ -390,14 +390,14 @@ Las matrices están parametrizadas. Numéricamente, la matriz de transformación
                                                                                    & \qquad 142.0 \sin{\left(\theta_{2} \right)} + 158.9 \sin{\left(\theta_{2} - \theta_{3} \right)} + 106.1                                                                               \\
                                                                                    & \qquad 1                                                                                                                                                                              \\
     \end{pmatrix}
-\end{align*}
+\end{align*}}
 
 Finalmente, hay que añadir una traslación en el eje $Z$ (debido a la posición del \textit{end-effector})
 y en el eje $X$, ya que después de la articulación $\theta_3$ hay una extensión de $44,5~mm.$ (ver figura \ref{fig:sizes}),
 para obtener así la posición final del robot $(X_e ~ Y_e ~ Z_e)$:
 
-{\small\begin{align*}
-    A_0^3 & =
+{\footnotesize\begin{align*}
+    A_0^3 &=
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                          & - \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                          & \cos{\left(\theta_{1} \right)}   \\
@@ -408,7 +408,7 @@ para obtener así la posición final del robot $(X_e ~ Y_e ~ Z_e)$:
                                                                                    & \qquad a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} - T_{Z}                                                                                \\
                                                                                    & \qquad 1
     \end{pmatrix} \\
-    A_0^3 & =
+    A_0^3 &=
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                         & - \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                         & \cos{\left(\theta_{1} \right)}   \\
