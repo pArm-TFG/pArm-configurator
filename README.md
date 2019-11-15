@@ -39,10 +39,10 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
 
 - [ ] Cinemática directa del manipulador.
   - [ ] Estudio de los casos: <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;0),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;0),&space;\vec{q}&space;=&space;(-\pi/2,&space;\pi/2,&space;a)&space;\vec{q}=&space;(\pi,&space;0,&space;a/2)" title="\vec{q} = (0, 0, 0), \vec{q} = (0, \pi/2, 0), \vec{q} = (-\pi/2, \pi/2, a), \vec{q}= (\pi, 0, a/2)" />
-  - [ ] Función que implementa la cinemática directa del manipulador <img src="https://latex.codecogs.com/png.latex?A_0^3" title="A_0^3" />
+  - [x] Función que implementa la cinemática directa del manipulador <img src="https://latex.codecogs.com/png.latex?A_0^3" title="A_0^3" />
 
 - [ ] Cinemática inversa
-  - [ ] Ecuaciones de la cinemática inversa del manipulador.
+  - [x] Ecuaciones de la cinemática inversa del manipulador.
   - [ ] Función que implementa dicha cinemática - devuelve una lista con todos los posibles valores de los parámetros.
 
 - [ ] Función Jacobiana
