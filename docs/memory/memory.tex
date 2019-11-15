@@ -310,7 +310,7 @@ que no es necesario contemplarlo en la tabla de \textit{Denavit-Hartenberg}:
         \caption{tabla de \textit{Denavit–Hartenberg} parametrizada}
     }
 \end{table}
-
+\newpage
 \section{Cinemática directa}
 A continuación, con los valores obtenidos en el apartado anterior, vamos a obtener las
 distintas matrices de transformación de referenciales de manipuladores. Para ello, partimos de la
@@ -329,21 +329,21 @@ siguiente matriz:
 Aplicando los distintos pasos, obtenemos:
 
 \begin{align*}
-    A_0^1 &=
+    A_0^1 & =
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} & 0 & \sin{\left(\theta_{1} \right)}   & d_{1} \cos{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} & 0 & - \cos{\left(\theta_{1} \right)} & d_{1} \sin{\left(\theta_{1} \right)} \\
         0                              & 1 & 0                                & a_{1}                                \\
         0                              & 0 & 0                                & 1                                    \\
     \end{pmatrix} \\
-    A_1^2 &=
+    A_1^2 & =
     \begin{pmatrix}
         \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{2} \right)}   & 0  & a_{2} \cos{\left(\theta_{2} \right)} \\
         \sin{\left(\theta_{2} \right)} & - \cos{\left(\theta_{2} \right)} & 0  & a_{2} \sin{\left(\theta_{2} \right)} \\
         0                              & 0                                & -1 & 0                                    \\
         0                              & 0                                & 0  & 1                                    \\
     \end{pmatrix} \\
-    A_2^3 &=
+    A_2^3 & =
     \begin{pmatrix}
         \cos{\left(\theta_{3} \right)} & - \sin{\left(\theta_{3} \right)} & 0 & a_{3} \cos{\left(\theta_{3} \right)} \\
         \sin{\left(\theta_{3} \right)} & \cos{\left(\theta_{3} \right)}   & 0 & a_{3} \sin{\left(\theta_{3} \right)} \\
@@ -356,14 +356,14 @@ Con todas las matrices ya obtenidas, podemos calcular la matriz de
 transformación directa del manipulador (son 4 columnas, pero no cabe la matriz al completo, por eso la última columna está debajo):
 
 {\footnotesize\begin{align*}
-    A_0^2 &=
+    A_0^2 & =
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{2} \right)} \cos{\left(\theta_{1} \right)} & - \sin{\left(\theta_{1} \right)} & \left(a_{2} \cos{\left(\theta_{2} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} \right)} & \cos{\left(\theta_{1} \right)}   & \left(a_{2} \cos{\left(\theta_{2} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{2} \right)}                                & - \cos{\left(\theta_{2} \right)}                              & 0                                & a_{1} + a_{2} \sin{\left(\theta_{2} \right)}                                             \\
         0                                                             & 0                                                             & 0                                & 1                                                                                        \\
     \end{pmatrix} \\
-    A_0^3 &=
+    A_0^3 & =
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                          & - \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                          & \cos{\left(\theta_{1} \right)}   \\
@@ -376,10 +376,11 @@ transformación directa del manipulador (son 4 columnas, pero no cabe la matriz 
     \end{pmatrix}
 \end{align*}}
 
+\newpage
 Las matrices están parametrizadas. Numéricamente, la matriz de transformación directa $A_0^3$ quedaría:
 
 {\footnotesize\begin{align*}
-    A_0^3 &=
+    A_0^3 & =
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                         & - \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                         & \cos{\left(\theta_{1} \right)}   \\
@@ -397,29 +398,40 @@ y en el eje $X$, ya que después de la articulación $\theta_3$ hay una extensi�
 para obtener así la posición final del robot $(X_e ~ Y_e ~ Z_e)$:
 
 {\footnotesize\begin{align*}
-    A_0^3 &=
+    A_0^3 & =
     \begin{pmatrix}
-        \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                          & - \sin{\left(\theta_{1} \right)} \\
-        \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                          & \cos{\left(\theta_{1} \right)}   \\
-        \sin{\left(\theta_{2} - \theta_{3} \right)}                                & - \cos{\left(\theta_{2} - \theta_{3} \right)}                                                                                                       & 0                                \\
-        0                                                                          & 0                                                                                                                                                   & 0                                \\
-                                                                                   & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)} + T_X                                   \\
-                                                                                   & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)}                                    \\
-                                                                                   & \qquad a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} - T_{Z}                                                                                \\
+        \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                                & - \sin{\left(\theta_{1} \right)} \\
+        \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                                & \cos{\left(\theta_{1} \right)}   \\
+        \sin{\left(\theta_{2} - \theta_{3} \right)}                                & - \cos{\left(\theta_{2} - \theta_{3} \right)}                                                                                                             & 0                                \\
+        0                                                                          & 0                                                                                                                                                         & 0                                \\
+                                                                                   & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)} + T_X                                    \\
+                                                                                   & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)}                                          \\
+                                                                                   & \qquad a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} - T_{Z}                                                                              \\
                                                                                    & \qquad 1
     \end{pmatrix} \\
-    A_0^3 &=
+    A_0^3 & =
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                         & - \sin{\left(\theta_{1} \right)} \\
         \sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)}                                                                         & \cos{\left(\theta_{1} \right)}   \\
         \sin{\left(\theta_{2} - \theta_{3} \right)}                                & - \cos{\left(\theta_{2} - \theta_{3} \right)}                                                                                                      & 0                                \\
         0                                                                          & 0                                                                                                                                                  & 0                                \\
-                                                                                   & \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \cos{\left(\theta_{1} \right)} + 44,5                                   \\
-                                                                                   & \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \sin{\left(\theta_{1} \right)}                                    \\
-                                                                                   & 142.0 \sin{\left(\theta_{2} \right)} + 158.9 \sin{\left(\theta_{2} - \theta_{3} \right)} + 106,1 - T_Z                                                                              \\
-                                                                                   & 1                                                                                                                                                                              \\
+                                                                                   & \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \cos{\left(\theta_{1} \right)} + 44,5                                    \\
+                                                                                   & \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \sin{\left(\theta_{1} \right)}                                           \\
+                                                                                   & 142.0 \sin{\left(\theta_{2} \right)} + 158.9 \sin{\left(\theta_{2} - \theta_{3} \right)} + 106,1 - T_Z                                                                                \\
+                                                                                   & 1                                                                                                                                                                                     \\
     \end{pmatrix}
 \end{align*}}
+
+De esta forma, obtendríamos las siguientes ecuaciones para $(X_e ~ Y_e ~ Z_e)$:
+
+\begin{equation*}
+    \left.\begin{aligned}
+        X_e & = \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)} + T_X \\
+        Y_e & = \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)}       \\
+        Z_e & = a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} - T_{Z}                                           \\
+    \end{aligned}
+    \right\}
+\end{equation*}
 
 \newpage
 \printbibliography
