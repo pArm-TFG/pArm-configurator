@@ -21,6 +21,7 @@ from . import Symbol
 from . import pi
 from . import Manipulator
 from . import cos
+from . import to_latrix
 from sympy import latex
 
 
@@ -62,8 +63,8 @@ def main():
     #     sub_times.add(stp - stt)
     # print("Average calc. time: {:.3f}s".format(sum(calc_times) / 10))
     # print("Average sub. time: {:.3f}s".format(sum(sub_times) / 10))
-    m2 = Manipulator(params=table)
-    m = Manipulator(params=table2)
+    m = Manipulator(params=table)
+    m2 = Manipulator(params=table2)
     # print(m.direct_kinematics["A04"])
     print(m2.direct_kinematics["A01"])
     print(m2.direct_kinematics["A12"])
@@ -90,6 +91,21 @@ def main():
     print(f"Xe'2: {latex(Xe12)}")
     print(f"Ze2: {latex(Ze2)}")
     print(f"Add: {latex(sq_add)}")
+
+    m2.set_phi('x', Symbol("theta_2") - Symbol("theta_3"))
+    m2.set_phi('y', 0)
+    m2.set_phi('z', Symbol("theta_1"))
+    j = m2.jacobian(symbols=[Symbol("theta_1"), Symbol("theta_2"), Symbol("theta_3")])
+    j1 = m2.inverse_kinematics.upper_jacobian
+    j2 = m2.inverse_kinematics.lower_jacobian
+    print(j1)
+    print(j2)
+    print(j)
+    print(to_latrix('p', j))
+    print(to_latrix('p', j1))
+    print(m2.inverse_kinematics.det)
+    print("LaTeX")
+    print(latex(m2.inverse_kinematics.det))
     # print(m.inverse_kinematics.sq_points_add)
     # print(((m.inverse_kinematics.Xe ** 2) + (m.inverse_kinematics.Ye ** 2)).simplify())
     # for i, j in ndindex((m.params.max, m.params.max)):

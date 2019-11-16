@@ -48,8 +48,26 @@ class DHTable:
             for value in table:
                 assert len(value.keys()) == 4
         self.__table = table
-        self.symbols = set()
+        self.symbols = list()
+        """
+        List of symbols used in DH-Table
+        """
         self.max = 0
+        """
+        How many items does the class have
+        """
+        self.Tx: float = 0.
+        """
+        Translation in 'X' axis
+        """
+        self.Ty: float = 0.
+        """
+        Translation in 'Y' axis
+        """
+        self.Tz: float = 0.
+        """
+        Translation in 'Z' axis
+        """
         self.__lengths = [set() for _ in range(4)]
 
     @staticmethod
@@ -102,13 +120,13 @@ class DHTable:
         })
         self.max += 1
         if type(theta) is Symbol:
-            self.symbols.add(theta)
+            self.symbols.append(theta)
         if type(d) is Symbol:
-            self.symbols.add(d)
+            self.symbols.append(d)
         if type(a) is Symbol:
-            self.symbols.add(a)
+            self.symbols.append(a)
         if type(alpha) is Symbol:
-            self.symbols.add(alpha)
+            self.symbols.append(alpha)
         self.__lengths[0].add(len(str(theta)))
         self.__lengths[1].add(len(str(d)))
         self.__lengths[2].add(len(str(a)))
@@ -133,8 +151,7 @@ class DHTable:
             self.__table[i][key] = value
             if type(value) is Symbol:
                 if type(old_value) is Symbol:
-                    self.symbols.remove(old_value)
-                self.symbols.add(value)
+                    self.symbols.insert(self.symbols.index(old_value), value)
 
     def remove(self, i: int) -> dict:
         """
