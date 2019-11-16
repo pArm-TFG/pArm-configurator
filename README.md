@@ -60,3 +60,4 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
 + *[Learn LaTeX in 30 minutes](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes)*
 +  [Vídeo del funcionamiento del brazo robótico](https://www.youtube.com/watch?v=VeZOi11NQRA)
 + *[Forward - inverse kinematics](http://www-scf.usc.edu/~csci545/slides/Lect5_Forward-InverseKinematicsII_Short.pdf)*
++ *[Python Robotics - IK](https://robohub.org/robotics-maths-python-a-fledgling-computer-scientists-guide-to-inverse-kinematics/)*
