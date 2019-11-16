@@ -72,6 +72,7 @@
 
 %%%% SECTIONS
 \section*{Conocimientos previos}
+\label{sec:previous_knowledge}
 
 Antes de ponernos a hablar sobre los resultados obtenidos en la práctica,
 antes vamos a hablar sobre algunas características básicas del brazo robótico e
@@ -164,6 +165,7 @@ Además, se encuentra disponible la siguiente bibliografía:
 
 \newpage
 \section{Configuración geométrica}
+\label{sec:dk}
 
 En esta sección vamos a describir la configuración geométrica del brazo robótico. La
 configuración que obtuvimos fue la siguiente:
@@ -353,7 +355,7 @@ Aplicando los distintos pasos, obtenemos:
 \end{align*}
 
 Con todas las matrices ya obtenidas, podemos calcular la matriz de
-transformación directa del manipulador (son 4 columnas, pero no cabe la matriz al completo, por eso la última columna está debajo):
+transformación directa del manipulador (son 4 columnas, sin embargo no cabe la matriz al completo y por eso la última columna está debajo):
 
 {\footnotesize\begin{align*}
     A_0^2 & =
@@ -397,7 +399,7 @@ Finalmente, hay que añadir una traslación\footnote{$T_X$ es la traslación en 
 y en el eje $X$, ya que después de la articulación $\theta_3$ hay una extensión de $44,5~mm.$ (ver figura \ref{fig:sizes}),
 para obtener así la posición final del robot $(X_e ~ Y_e ~ Z_e)$:
 
-{\footnotesize\begin{align*}
+{\footnotesize\begin{align}
     A_0^3 & =
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                                & - \sin{\left(\theta_{1} \right)} \\
@@ -408,7 +410,7 @@ para obtener así la posición final del robot $(X_e ~ Y_e ~ Z_e)$:
                                                                                    & \qquad \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)}                                          \\
                                                                                    & \qquad a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} - T_{Z}                                                                              \\
                                                                                    & \qquad 1
-    \end{pmatrix} \\
+    \end{pmatrix} \label{eq:A03_param} \\
     A_0^3 & =
     \begin{pmatrix}
         \cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)} & \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)}                                                                         & - \sin{\left(\theta_{1} \right)} \\
@@ -419,19 +421,220 @@ para obtener así la posición final del robot $(X_e ~ Y_e ~ Z_e)$:
                                                                                    & \left(142.0 \cos{\left(\theta_{2} \right)} + 158.9 \cos{\left(\theta_{2} - \theta_{3} \right)} + 13.2\right) \sin{\left(\theta_{1} \right)}                                           \\
                                                                                    & 142.0 \sin{\left(\theta_{2} \right)} + 158.9 \sin{\left(\theta_{2} - \theta_{3} \right)} + 106,1 - T_Z                                                                                \\
                                                                                    & 1                                                                                                                                                                                     \\
-    \end{pmatrix}
-\end{align*}}
+    \end{pmatrix} \label{eq:A03_num}
+\end{align}}
 
 De esta forma, obtendríamos las siguientes ecuaciones para $(X_e ~ Y_e ~ Z_e)$:
 
-\begin{equation*}
+\begin{equation} \label{eq:XeYeZe}
     \left.\begin{aligned}
         X_e & = \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)} + T_X \\
         Y_e & = \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)}       \\
         Z_e & = a_{1} + a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} - T_{Z}                                           \\
     \end{aligned}
     \right\}
+\end{equation}
+
+\newpage
+
+\section{Cinemática inversa}
+\label{sec:ik}
+
+Una vez tenemos las ecuaciones correspondientes a $(X_e ~ Y_e ~ Z_e)$, podemos calcular
+la cinemática inversa del $\mu Arm$. Con dicha cinemática, se pueden obtener los ángulos
+$(\theta_1, \theta_2, \theta_3)$ del brazo robótico.
+
+Antes de realizar los cálculos, se planteó el modelo geométrico del robot, para poder
+deducir los distintos ángulos que se podían formar y cómo estaba distribuido el brazo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{images/ik_geometry.png}
+    \caption{distribución geométrica del brazo}
+    \label{fig:ik_geometry}
+\end{figure}
+
+En la figura \ref{fig:ik_geometry} se puede ver cómo, en el plano $XZ$ (de perfil),
+se encuentra presente una altura inicial $a_1$ correspondiente a la base del brazo,
+así como una pequeña desviación en los ejes $d_1$ la cual afecta a la posición en $Z$.
+A continuación, cada extremidad del brazo está definida junto con la correspondiente
+articulación $\theta_i$. Como se puede observar, el ángulo $\theta_2$ es positivo pero,
+debido a cómo está configurado el robot geométricamente, los ángulos $\theta_3$ y
+$\theta_4$ han de ser negativos\footnote{véase la figura \ref{fig:sizes} para más
+    información sobre la configuración del brazo robótico}.
+
+Como se vio anteriormente en la sección \textit{Conocimientos previos},
+en particular la figura \ref{fig:robot_config}, se suprimió el último parámetro de la
+tabla de \textit{Denavit–Hartenberg} ya que dicho ángulo siempre es perpendicular al
+plano del suelo y, por ende, está supeditado a los ángulos anteriores $\theta_2$ y
+$\theta_3$. En su lugar, se sustituye por una traslación en el eje $Z$: $T_Z$ (véase
+las matrices \ref{eq:A03_param} y \ref{eq:A03_num} y la ecuación \ref{eq:XeYeZe}).
+
+De esta forma, se obtuvieron las siguientes ecuaciones para el plano $XZ$:
+
+\begin{table}[H]
+    \parbox{.45\linewidth}{
+        \begin{equation} \label{eq:x_equations}
+            L = \left\{\begin{aligned}
+                a_{2X} & = a_2 \cdot \cos(\theta_2)            \\
+                a_{3X} & = a_3 \cdot \cos(\theta_2 + \theta_3) \\
+                a_{4X} & = a_4 \cdot \cos(\phi_e)              \\
+            \end{aligned}
+            \right.
+        \end{equation}
+    }
+    \hfill
+    \parbox{.45\linewidth}{
+        \begin{equation} \label{eq:z_equations}
+            H = \left\{\begin{aligned}
+                a_{2Z} & = a_2 \cdot \sin(\theta_2)            \\
+                a_{3Z} & = a_3 \cdot \sin(\theta_2 + \theta_3) \\
+                a_{4Z} & = a_4 \cdot \sin(\phi_e)              \\
+            \end{aligned}
+            \right.
+        \end{equation}
+    }
+\end{table}
+
+Finalmente, se evaluó el plano $XY$ del modelo geométrico del brazo robótico:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{images/ik_xy_first_approach.png}
+    \caption{plano $XY$ del brazo robótico}
+    \label{fig:xy_first_approrach}
+\end{figure}
+
+De esta manera, se obtuvieron las siguientes ecuaciones para $L_X$ y $L_Y$:
+
+\begin{equation} \label{eq:lx_ly_equations}
+    \left\{
+    \begin{aligned}
+        L_X & = L \cdot \cos(\theta_1) = X_e \\
+        L_Y & = L \cdot \sin(\theta_1) = Y_e \\
+    \end{aligned}
+    \right.
+\end{equation}
+
+La problemática de plantear el modelo de esta forma se mostró a la hora de intentar
+resolver las ecuaciones de $X_e$, $Y_e$ y $Z_e$: al sustituir en la ecuación \ref{eq:XeYeZe},
+el sistema a resolver era demasiado complejo, resultando imposible la obtención
+de alguno de los ángulos, con lo que el sistema no tenía solución.
+
+Como ya se comentó anteriormente, en la tabla de \textit{Denavit-Hartenberg} se eliminó
+el último parámetro: pese a que sea un grado de libertad, al estar supeditado a los dos
+ángulos anteriores y ser siempre perpendicular al plano del suelo, no es necesario
+tenerlo en cuenta para la obtención de la inversa del robot.
+
+Esto produjo que el último punto efectivo del robot resultara ser el extremo del brazo
+de la articulación $\theta_3$:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.5\linewidth]{images/ik_schematic.png}
+    \caption{aproximación geométrica del $\mu Arm$}
+    \label{fig:ik_uarm}
+\end{figure}
+
+De esta forma, la complejidad se reduce bastante, ya que ahora en el plano $XZ$ solo
+se cuentan con dos grados de libertad: $\theta_2$ y $\theta_3$, además de la traslación
+en $X$ que se comentó anteriormente ($T_X$) y que se puede ver en la figura \ref{fig:ik_uarm}.
+
+Esta nueva configuración permite aplicar el teorema del coseno\footnote
+{Teorema del coseno: $c^2 = a^2 + b^2 - 2ab\cos\beta$}:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\textwidth]{images/trigonometry.PNG}
+    \caption{configuración del brazo robótico donde se puede aplicar el teorema del coseno}
+    \label{fig:cos_theorem}
+\end{figure}
+
+Así, se pueden extraer $\theta_2$ y $\theta_3$:
+
+\begin{align}
+    \pi    & = \beta + \theta_3 \Longrightarrow \beta = \pi - \theta_3 \\
+    \phi_e & = \theta_2 - \theta_3
+\end{align}
+
+Usando la ecuación \ref{eq:XeYeZe}, podemos despejar:
+
+\begin{align*}
+    X_e^2 + Z_e^2 & = a_2^2 + a_3^2 - 2a_2a_3\cos(\beta) =          \\
+                  & = a_2^2 + a_3^2 - 2a_2a_3\cos(\pi - \theta_3) = \\
+                  & = a_2^2 + a_3^2 + 2a_2a_3\cos(\theta_3)         \\
+\end{align*}
+\begin{align}
+    \cos(\theta_3)           & = \frac{X_e^2 + Y_e^2 - a_2^2 - a_3^2}{2a_2a_3} \label{eq:cos_theta_3} \\
+    \sin(\theta_3)           & = \sqrt{1 - \cos^2(\theta_3)} \label{eq:sin_theta_3}                   \\
+    \Longrightarrow \theta_3 & = \arctan\left(\frac{\sin(\theta_3)}{\cos(\theta_3)}\right)
+    \label{eq:theta_3}                                                                                \\
+    \Longrightarrow \theta_2 & = \phi_e + \theta_3 \label{eq:theta_2}                                 \\
+\end{align}
+
+Finalmente, en el plano $XY$ tenemos la siguiente configuración:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{images/ik_xy_ok.png}
+    \caption{visión del $\mu Arm$ en el plano $XY$}
+    \label{fig:uarm_xy_ok}
+\end{figure}
+
+De este modo, aplicando el teorema de Pitágoras\footnote
+{Teorema de Pitágoras: $h^2 = c_1^2 + c_2^2$}, se obtiene:
+
+\begin{align*}
+    L                              & = \pm \sqrt{(X_e + T_X)^2 + Y_e^2}                     \\
+    \cos(\theta_1)                 & = \frac{X_e + T_X}{\sqrt{(X_e + T_X)^2 + Y_e^2 + d_1}} \\
+    \sin(\theta_1)                 & = \frac{Y_e}{\sqrt{(X_e + T_X)^2 + Y_e + d_1}}         \\
+    \Longrightarrow \tan(\theta_1) & = \frac{\sin(\theta_1)}{\cos(\theta_1)}                \\
+\end{align*}
+\begin{align}
+    \theta_1 & = \arctan\left(\frac{\cfrac{Y_e}{\sqrt{(X_e + T_X)^2 + Y_e^2 + d_1}}}{\cfrac{X_e + T_X}{\sqrt{(X_e + T_X)^2 + Y_e^2 + d_1}}}\right) \\
+             & = \arctan\left(\frac{Y_e}{X_e + T_X + d_1}\right) \label{eq:theta_1}                                                                \\
+\end{align}
+
+De esta forma, un algoritmo de obtención de la inversa sería:
+
+\begin{itemize}
+    \item Obtener $\theta_1$ a partir del punto $(X_e + T_X, Y_e, Z_e - T_Z)$, usando la ecuación \ref{eq:theta_1}.
+    \item Obtener $(X_e ~ Y_e ~ Z_e)$ quitando las traslaciones $T_X$ y $T_Z$: $X_e = X_e - T_X; Z_e = Z_e + T_Z$.
+    \item Obtener $\cos(\theta_3)$ con la ecuación \ref{eq:cos_theta_3} y el $\sin(\theta_3)$ con la ecuación \ref{eq:sin_theta_3}.
+    \item Calcular $\theta_3$ usando la ecuación \ref{eq:theta_3}.
+    \item Calcular $\theta_2$ usando la ecuación \ref{eq:theta_2}.
+\end{itemize}
+
+{\scriptsize\begin{align*}
+    \begin{pmatrix}
+        - \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)} & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \cos{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)} \\
+        \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)}   & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \sin{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)} \\
+        0                                                                                                                                              & a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}                                               & - a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}                              \\
+        0                                                                                                                                              & 1                                                                                                                                      & -1                                                                               \\
+        0                                                                                                                                              & 0                                                                                                                                      & 0                                                                                \\
+        1                                                                                                                                              & 0                                                                                                                                      & 0                                                                                \\
+    \end{pmatrix}
+\end{align*}}
+
+{\scriptsize\begin{align*}
+    \begin{pmatrix}
+        - \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)} & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \cos{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)} \\
+        \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)}   & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \sin{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)} \\
+        0                                                                                                                                              & a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}                                               & - a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}                              \\
+    \end{pmatrix}
+\end{align*}}
+
+\begin{equation*}
+    - a_{2} a_{3} \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{3} \right)}
 \end{equation*}
+
+\begin{align*}
+    \begin{pmatrix}
+        - \frac{\sin{\left(\theta_{1} \right)}}{a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}}                                                 & \frac{\cos{\left(\theta_{1} \right)}}{a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}}                                                   & 0                                                                                                                                             \\
+        - \frac{\cos{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)}}{a_{2} \sin{\left(\theta_{3} \right)}}                                                                 & - \frac{\sin{\left(\theta_{1} \right)} \cos{\left(\theta_{2} - \theta_{3} \right)}}{a_{2} \sin{\left(\theta_{3} \right)}}                                                                 & - \frac{\sin{\left(\theta_{2} - \theta_{3} \right)}}{a_{2} \sin{\left(\theta_{3} \right)}}                                                    \\
+        - \frac{\left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}\right) \cos{\left(\theta_{1} \right)}}{a_{2} a_{3} \sin{\left(\theta_{3} \right)}} & - \frac{\left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}\right) \sin{\left(\theta_{1} \right)}}{a_{2} a_{3} \sin{\left(\theta_{3} \right)}} & - \frac{a_{2} \sin{\left(\theta_{2} \right)} + a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}}{a_{2} a_{3} \sin{\left(\theta_{3} \right)}} \\
+    \end{pmatrix}
+\end{align*}
 
 \newpage
 \printbibliography

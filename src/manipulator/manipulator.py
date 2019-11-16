@@ -19,6 +19,7 @@ from typing import Dict
 from typing import Any
 
 from sympy import Matrix
+from sympy import simplify
 
 from numbers import Number
 
@@ -83,6 +84,7 @@ class InverseKinematics:
         self.upper_jacobian = None
         self.lower_jacobian = None
         self.m_jacobian = None
+        self.i_jacobian = None
 
     def set_phi(self, xyz: str, expression: Union[Symbol, Number]):
         if xyz.lower() not in ['x', 'y', 'z']:
@@ -102,6 +104,7 @@ class InverseKinematics:
         self.upper_jacobian = self.m_jacobian[:3, :]
         self.lower_jacobian = self.m_jacobian[3:, :]
         self.det = self.upper_jacobian.det().simplify()
+        self.i_jacobian = simplify(self.upper_jacobian ** -1)
         return self.m_jacobian
 
 

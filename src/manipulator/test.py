@@ -40,6 +40,8 @@ def main():
                a=Symbol("d_1"), alpha=(pi / 2), check_attrs=False) \
         .add(theta=Symbol("theta_2"), d=0, a=Symbol("a_2"), alpha=pi, check_attrs=False) \
         .add(theta=Symbol("theta_3"), d=0, a=Symbol("a_3"), alpha=0, check_attrs=False)
+    table2.Tx = Symbol("T_X")
+    table2.Tz = -Symbol("T_Z")
     # \
     # .add(theta=((pi / 2) - (Symbol("theta_2") + Symbol("theta_3"))), d=0,
     #      a=Symbol("a_4"), alpha=0, check_attrs=False)
@@ -106,6 +108,9 @@ def main():
     print(m2.inverse_kinematics.det)
     print("LaTeX")
     print(latex(m2.inverse_kinematics.det))
+    print("Inverse Jacobian")
+    print(m2.inverse_kinematics.i_jacobian)
+    print(to_latrix('p', m2.inverse_kinematics.i_jacobian))
     # print(m.inverse_kinematics.sq_points_add)
     # print(((m.inverse_kinematics.Xe ** 2) + (m.inverse_kinematics.Ye ** 2)).simplify())
     # for i, j in ndindex((m.params.max, m.params.max)):
