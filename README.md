@@ -47,10 +47,10 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
 
 - [ ] Función Jacobiana
   - [ ] Matriz Jacobiana en el estudio de los casos <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;a/2),&space;\vec{q}&space;=&space;(0,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(\pi/4,&space;-\pi/4,&space;0),&space;\vec{q}&space;=&space;(-\pi/90,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(-\pi/4,&space;\pi/4,&space;0)&space;y&space;\vec{q}&space;=&space;(\pi/90,&space;-\pi/90,&space;a/100),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;a/2),&space;\vec{q}&space;=&space;(\pi/90,&space;0,&space;-a/100)" title="\vec{q} = (0, 0, a/2), \vec{q} = (0, \pi/90, 0), \vec{q} = (\pi/4, -\pi/4, 0), \vec{q} = (-\pi/90, \pi/90, 0), \vec{q} = (-\pi/4, \pi/4, 0), \vec{q} = (\pi/90, -\pi/90, a/100), \vec{q} = (0, \pi/2, a/2), \vec{q} = (\pi/90, 0, -a/100)" /> y su expresión gráfica.
-  - [ ] Función que devuelve la matriz Jacobiana del manipulador dadas las coordenadas articulares.
+  - [x] Función que devuelve la matriz Jacobiana del manipulador dadas las coordenadas articulares.
 
 - [ ] Singularidades y generación de trayectorias
-  - [ ] Determinar las configuraciones singulares.
+  - [x] Determinar las configuraciones singulares.
   - [ ] Función que devuelva una lista de coordinadas articulares las cuales, aplicadas en secuencia, permiten hacer que el manipulador describa una determinada trayectoria (función matemática).
 
 - [ ] Representación gráfica de los resultados.
