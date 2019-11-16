@@ -136,6 +136,7 @@ posiciones accesibles por el robot.
             \hline
         \end{tabular}
         \caption{ángulo de giro de los motores}
+        \label{tab:motors}
     \end{minipage}
     \hfill
     \begin{minipage}{.49\linewidth}
@@ -605,7 +606,72 @@ De esta forma, un algoritmo de obtención de la inversa sería:
     \item Calcular $\theta_2$ usando la ecuación \ref{eq:theta_2}.
 \end{itemize}
 
-{\scriptsize\begin{align*}
+\section{Matriz Jacobiana}
+\label{sec:jacobian}
+
+La matriz Jacobiana nos permite obtener el movimiento $\vec{x}$, correspondiente a las
+velocidades en el extremo del robot dadas unas velocidades de las articulaciones $\vec{q}$.
+
+La matriz Jacobiana es una matriz de derivadas, esto es, varía según el tiempo. De esta forma,
+se puede definir la matriz Jacobiana de un manipulador como:
+
+\begin{equation} \label{eq:jacobian_manipulator}
+    \vec{x} = J \cdot \vec{q}
+    \left\{
+    \begin{aligned}
+        \vec{q} & = (\theta_1, \cdots, \theta_n, d_1, \cdots, d_n) \\
+        \vec{x} & = (X_e, Y_e, Z_e, \phi_e)                        \\
+        J       & \equiv matriz ~ Jacobiana
+    \end{aligned}
+    \right.
+\end{equation}
+
+\begin{align}
+    J_1(\vec{q}) & =
+    \begin{pmatrix}
+        \frac{\partial X_e}{\partial q_0} & \frac{\partial X_e}{q_1} & \cdots & \frac{\partial X_e}{q_n} & \frac{\partial X_e}{d_1} & \cdots & \frac{\partial X_e}{d_n} \\
+        \frac{\partial Y_e}{\partial q_0} & \frac{\partial Y_e}{q_1} & \cdots & \frac{\partial Y_e}{q_n} & \frac{\partial Y_e}{d_1} & \cdots & \frac{\partial Y_e}{d_n} \\
+        \frac{\partial Z_e}{\partial q_0} & \frac{\partial Z_e}{q_1} & \cdots & \frac{\partial Z_e}{q_n} & \frac{\partial Z_e}{d_1} & \cdots & \frac{\partial Z_e}{d_n} \\
+    \end{pmatrix} \label{eq:jacobian_1}
+\end{align}
+\begin{align}
+    J_2(\vec{q}) & =
+    \begin{pmatrix}
+        \frac{\partial \phi_X}{\partial q_0} & \frac{\partial \phi_X}{q_1} & \cdots & \frac{\partial \phi_X}{q_n} & \frac{\partial \phi_X}{d_1} & \cdots & \frac{\partial \phi_X}{d_n} \\
+        \frac{\partial \phi_Y}{\partial q_0} & \frac{\partial \phi_Y}{q_1} & \cdots & \frac{\partial \phi_Y}{q_n} & \frac{\partial \phi_Y}{d_1} & \cdots & \frac{\partial \phi_Y}{d_n} \\
+        \frac{\partial \phi_Z}{\partial q_0} & \frac{\partial \phi_Z}{q_1} & \cdots & \frac{\partial \phi_Z}{q_n} & \frac{\partial \phi_Z}{d_1} & \cdots & \frac{\partial \phi_Z}{d_n} \\
+    \end{pmatrix} \label{eq:jacobian_2}
+\end{align}
+\begin{align}
+    J(\vec{q}) & =
+    \begin{pmatrix}
+        J_1(\vec{q}) \\
+        J_2(\vec{q}) \\
+    \end{pmatrix} \label{eq:jacobian}
+\end{align}
+
+En nuestro caso particular, obtenemos la siguiente matriz Jacobiana:
+
+{\scriptsize\begin{align}
+    J_1(\vec{q}) & =
+    \begin{pmatrix}
+        - \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)} & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \cos{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)} \\
+        \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)}   & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \sin{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)} \\
+        0                                                                                                                                              & a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}                                               & - a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}                              \\
+    \end{pmatrix}
+\end{align}}
+
+\begin{align}
+    J_2(\vec{q}) & =
+    \begin{pmatrix}
+        0 & 1 & -1 \\
+        0 & 0 & 0  \\
+        1 & 0 & 0  \\
+    \end{pmatrix}
+\end{align}
+
+{\scriptsize\begin{align}
+    J(\vec{q}) & =
     \begin{pmatrix}
         - \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)} & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \cos{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)} \\
         \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)}   & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \sin{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)} \\
@@ -614,19 +680,34 @@ De esta forma, un algoritmo de obtención de la inversa sería:
         0                                                                                                                                              & 0                                                                                                                                      & 0                                                                                \\
         1                                                                                                                                              & 0                                                                                                                                      & 0                                                                                \\
     \end{pmatrix}
-\end{align*}}
+\end{align}}
 
-{\scriptsize\begin{align*}
-    \begin{pmatrix}
-        - \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{1} \right)} & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \cos{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)} \cos{\left(\theta_{1} \right)} \\
-        \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \cos{\left(\theta_{1} \right)}   & \left(- a_{2} \sin{\left(\theta_{2} \right)} - a_{3} \sin{\left(\theta_{2} - \theta_{3} \right)}\right) \sin{\left(\theta_{1} \right)} & a_{3} \sin{\left(\theta_{1} \right)} \sin{\left(\theta_{2} - \theta_{3} \right)} \\
-        0                                                                                                                                              & a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}                                               & - a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)}                              \\
-    \end{pmatrix}
-\end{align*}}
+Con la matriz Jacobiana ya obtenida se pueden obtener los puntos críticos. Dichos puntos
+permiten conocer posiciones inalcanzables por el brazo robótico, ya que el determinante
+en dicho punto es 0 y, por tanto, no existe la inversa.
 
-\begin{equation*}
-    - a_{2} a_{3} \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{3} \right)}
-\end{equation*}
+Para este brazo robótico, el determinante es:
+
+\begin{equation} \label{eq:det_j}
+    \det J(\vec{q}) = - a_{2} a_{3} \left(a_{2} \cos{\left(\theta_{2} \right)} + a_{3} \cos{\left(\theta_{2} - \theta_{3} \right)} + d_{1}\right) \sin{\left(\theta_{3} \right)}
+\end{equation}
+
+Analíticamente, los puntos críticos del $\mu Arm$ son: $\theta_3 = 0$ y $\theta_3 = \pi$.
+Pero, al observar las tablas con los ángulos de giro de los motores (ver tabla \ref{tab:motors}),
+comprobamos que el brazo robótico no es capaz de llegar a los $\ang{180}$ y, por la configuración
+geométrica del mismo, tampoco puede tener $\ang{0}$\footnote
+{el motor tiene esos grados de libertad, pero la articulación no, y está limitada por la estructura},
+lo cual nos conduce a que no hay puntos críticos en este brazo robótico:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{images/arm_weights_distances.png}
+    \caption{área de trabajo del $\mu Arm$}
+    \label{fig:working_area}
+\end{figure}
+
+\section{Matriz Jacobiana inversa}
+\label{sec:inv_jacobian}
 
 \begin{align*}
     \begin{pmatrix}
