@@ -126,10 +126,19 @@ En esta parte del manipulador, el movimiento es como el de un flexo: la parte su
 del flexo está supeditada a la parte inferior, de manera que se mantiene de forma
 constante la altura a la que está el extremo final del mismo.
 
-El otro motor \textbf{izquierda del brazo}, localizado a la izquierda de la imagen, se encarga de controlar la parte superior (\textit{Upper Arm} en la figura) del brazo mediante una junta que controla la estructura triangular superior. 
-Cabe destacar que dado que la articulación situada en el extremo de la parte superior del manipulador no es controlable, esta se mantiene siempre paralela al suelo y con orientacion hacia delante. Debido a esta opción de diseño, el manipulador se simplifica y se reduce un grado de libertad, teniendo el manipulador tres grados de libertad (base, parte inferior y parte superior).
+El otro motor \textbf{izquierda del brazo}, localizado a la izquierda de la imagen,
+se encarga de controlar la parte superior (\textit{Upper Arm} en la figura)
+del brazo mediante una junta que controla la estructura triangular superior. 
+Cabe destacar que dado que la articulación situada en el extremo de la parte 
+superior del manipulador no es controlable, esta se mantiene siempre paralela al suelo 
+y con orientación hacia delante. Debido a esta opción de diseño, el manipulador se 
+simplifica y se reduce un grado de libertad, teniendo el manipulador tres grados de libertad 
+(base, parte inferior y parte superior).
 
-El \textbf{motor localizado en el extremo}, se encuentra incluido en el end-effector y se utiliza para dotar de movimiento independiente al mismo. Por ejemplo, cuando se coloca una ventosa permite rotarla,cuando se coloca la pinza, el movimiento del motor permite abrirla o cerrarla.
+El \textbf{motor localizado en el extremo}, se encuentra incluido en el \textit{end-effector} 
+y se utiliza para dotar de movimiento independiente al mismo. Por ejemplo, cuando se coloca 
+una ventosa permite rotarla, cuando se coloca la pinza, el movimiento del motor permite 
+abrirla o cerrarla.
 
 Para este estudio, este último motor se descartará, ya que no afecta a las
 posiciones accesibles por el robot.
@@ -898,16 +907,24 @@ sobre las articulaciones para realizar dicho desplazamiento, se realizan los sig
     \item Se aplican las expresiones de cinemática inversa sobre el punto inicial $P_{o} = \left(x_{o}, y_{o}, z_{0}\right)$
           y punto final $P_{f} = \left(x_{f}, y_{f}, z_{f}\right)$ del desplazamiento, de forma que se obtienen las coordenadas
           articulares correspondientes a cada punto $q_{o} = \left({\theta_{1}}_o, {\theta_{2}}_o,{\theta_{3}}_o\right)$ y
-          $q_{f} = \left({\theta_{1}}_f, {\theta_{2}}_f,{\theta_{3}}_f\right)$. Para cada uno de los puntos, inicial y final se debe conocer también la  orientación del punto final del manipulador.
-    \Item Una vez se han calculado las coordenadas articulares de cada uno de los puntos de la trayectoria, se deben tener en cuenta numerosos factores que afectan al desplazamiento del manipulador, como por ejemplo son la velocidad del end_effector, las posiciones singulares, la aceleración,etc. Todos estos factores definirán que tipo de trayectoria se emplea y el modo de obtenerla.
+          $q_{f} = \left({\theta_{1}}_f, {\theta_{2}}_f,{\theta_{3}}_f\right)$. Para cada uno de los puntos, inicial y 
+          final se debe conocer también la  orientación del punto final del manipulador.
+    \item Una vez se han calculado las coordenadas articulares de cada uno de los puntos de la trayectoria, se deben 
+    tener en cuenta numerosos factores que afectan al desplazamiento del manipulador, como por ejemplo son la velocidad
+    del \textit{end-effector}, las posiciones singulares, la aceleración,etc. Todos estos factores definirán que tipo de 
+    trayectoria se emplea y el modo de obtenerla.
 
-    \Item Existen diversos metodos de planificación de trayectorias, sin embargo todos ellos se fundamentan en la cinemática inversa y directa, en el uso de la matriz jacobiana y su inversa, y por último en el uso de metodos iterativos que aplican estas herramientas para cada punto de la trayectoria.
+    \item Existen diversos métodos de planificación de trayectorias, sin embargo todos ellos se fundamentan en la 
+    cinemática inversa y directa, en el uso de la matriz Jacobiana y su inversa, y por último en el uso de 
+    métodos iterativos que aplican estas herramientas para cada punto de la trayectoria.
     \end{itemize}
 
-Durante la planificación de la trayectoria, se deben tener en cuenta las limitaciones físicas de diseño del manipulador, como pueden ser los rangos máximos de giro de los motores, la velocidad angular máxima de los mismos o el alcance máximo del manipulador.
+Durante la planificación de la trayectoria, se deben tener en cuenta las limitaciones físicas de diseño del manipulador, 
+como pueden ser los rangos máximos de giro de los motores, la velocidad angular máxima de los mismos o el alcance máximo del manipulador.
 
-El proceso descrito anteriormente tambien se puede aplicar a funciones de tres dimensiones, asi como para cualquier trayectoria particular que se quiera describir.
+El proceso descrito anteriormente también se puede aplicar a funciones de tres dimensiones, así como para cualquier trayectoria particular que se quiera describir.
 
+\newpage
 \printbibliography
 
 \newpage
