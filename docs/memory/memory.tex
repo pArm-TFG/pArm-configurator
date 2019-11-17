@@ -85,7 +85,7 @@ posiciones y, el último, para mantener el extremo del mismo paralelo al suelo.
 \begin{wrapfigure}{R}{.4\textwidth}
     \begin{center}
         \includegraphics[width=.4\textwidth]{images/motors.png}
-        \caption{zonas de actuación de los motores en el brazo \cite{developer_guide_uarm}}
+        \caption{zonas de actuación de los motores en el brazo \cite{noauthor_uarm_2019-1}}
         \label{fig:motors}
     \end{center}
 \end{wrapfigure}
@@ -135,7 +135,7 @@ posiciones accesibles por el robot.
             Extremo        & $\ang{0} \sim \ang{180}$  \\ [1ex]
             \hline
         \end{tabular}
-        \caption{ángulo de giro de los motores}
+        \caption{ángulo de giro de los motores \cite{noauthor_uarm-swift-specifications-171012.pdf_2019}}
         \label{tab:motors}
     \end{minipage}
     \hfill
@@ -143,7 +143,7 @@ posiciones accesibles por el robot.
         \begin{figure}[H]
             \centering
             \includegraphics[width=\linewidth]{images/range.png}
-            \caption{rango del manipulador \emph{{\textmu}Arm} \cite{user_manual_uarm}}
+            \caption{rango del manipulador \emph{{\textmu}Arm} \cite{noauthor_uarm_2019}}
             \label{fig:range}
         \end{figure}
     \end{minipage}
@@ -185,7 +185,7 @@ configuración que obtuvimos fue la siguiente:
     \end{minipage}
 \end{figure}
 
-Usando los datos que están presentes en la documentación al desarrollador \cite{developer_guide_uarm},
+Usando los datos que están presentes en la documentación al desarrollador \cite{noauthor_uarm_2019-1},
 pudimos obtener los siguientes datos para los $a_i$ (distancia entre ejes) del manipulador; además,
 descubrimos que hay una pequeña desviación $d_i$ entre las articulaciones $\{1, 2\}$:
 
@@ -194,7 +194,7 @@ descubrimos que hay una pequeña desviación $d_i$ entre las articulaciones $\{1
         \begin{figure}[H]
             \centering
             \includegraphics[width=\linewidth]{images/sizes.png}
-            \caption{longitudes del brazo robótico \cite{developer_guide_uarm}}
+            \caption{longitudes del brazo robótico \cite{noauthor_uarm_2019-1}}
             \label{fig:sizes}
         \end{figure}
     \end{minipage}
@@ -610,7 +610,8 @@ De esta forma, un algoritmo de obtención de la inversa sería:
 \label{sec:jacobian}
 
 La matriz Jacobiana nos permite obtener el movimiento $\vec{x}$, correspondiente a las
-velocidades en el extremo del robot dadas unas velocidades de las articulaciones $\vec{q}$.
+velocidades en el extremo del robot dadas unas velocidades de las articulaciones $\vec{q}$
+\cite{travisdewolf_robot_2013}.
 
 La matriz Jacobiana es una matriz de derivadas, esto es, varía según el tiempo. De esta forma,
 se puede definir la matriz Jacobiana de un manipulador como:
@@ -682,6 +683,10 @@ En nuestro caso particular, obtenemos la siguiente matriz Jacobiana:
     \end{pmatrix}
 \end{align}}
 
+Entre otras utilidades de la matriz Jacobiana, podemos obtener diferentes ecuaciones
+que van relacionando el movimiento del brazo con el trabajo que hace, la fuerza que
+es necesaria y la potencia:
+
 Con la matriz Jacobiana ya obtenida se pueden obtener los puntos críticos. Dichos puntos
 permiten conocer posiciones inalcanzables por el brazo robótico, ya que el determinante
 en dicho punto es 0 y, por tanto, no existe la inversa.
@@ -702,7 +707,7 @@ lo cual nos conduce a que no hay puntos críticos en este brazo robótico:
 \begin{figure}[H]
     \centering
     \includegraphics[width=.8\linewidth]{images/arm_weights_distances.png}
-    \caption{área de trabajo del $\mu Arm$}
+    \caption{área de trabajo del $\mu Arm$ \cite{noauthor_uarm_2019-1}}
     \label{fig:working_area}
 \end{figure}
 

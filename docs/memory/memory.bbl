@@ -19,7 +19,7 @@
 
 \refsection{0}
   \datalist[entry]{none/global//global/global}
-    \entry{developer_guide_uarm}{misc}{}
+    \entry{noauthor_uarm_2019-1}{misc}{}
       \list{language}{1}{%
         {en}%
       }
@@ -42,12 +42,35 @@
       \verb http://download.ufactory.cc/docs/en/uArm%20Swift%20Pro_Developer%20Guide%20v1.0.6.pdf
       \endverb
     \endentry
-    \entry{user_manual_uarm}{misc}{}
+    \entry{noauthor_uarm-swift-specifications-171012.pdf_2019}{misc}{}
       \list{language}{1}{%
         {en}%
       }
       \field{sortinit}{3}
       \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{labeltitlesource}{title}
+      \field{title}{{uArm}-{Swift}-{Specifications}-171012.pdf}
+      \field{urlday}{2}
+      \field{urlmonth}{11}
+      \field{urlyear}{2019}
+      \field{year}{2019}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb uArm-Swift-Specifications-171012.pdf:/home/javinator9889/Zotero/storage/4KMTHBCH/uArm-Swift-Specifications-171012.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://download.ufactory.cc/docs/en/uArm-Swift-Specifications-171012.pdf
+      \endverb
+      \verb{url}
+      \verb http://download.ufactory.cc/docs/en/uArm-Swift-Specifications-171012.pdf
+      \endverb
+    \endentry
+    \entry{noauthor_uarm_2019}{misc}{}
+      \list{language}{1}{%
+        {en}%
+      }
+      \field{sortinit}{5}
+      \field{sortinithash}{5dd416adbafacc8226114bc0202d5fdd}
       \field{labeltitlesource}{title}
       \field{title}{{uArm} pro {User} {Manual} v1.1.0.pdf}
       \field{urlday}{2}
@@ -69,8 +92,8 @@
       \list{publisher}{1}{%
         {Robotics UPM}%
       }
-      \field{sortinit}{5}
-      \field{sortinithash}{5dd416adbafacc8226114bc0202d5fdd}
+      \field{sortinit}{7}
+      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
       \field{labeltitlesource}{title}
       \field{abstract}{Práctica de Manipuladores con el robot uArm. Contribute to UPM-Robotics/uarm development by creating an account on GitHub.}
       \field{month}{11}
@@ -86,6 +109,45 @@
       \endverb
       \verb{url}
       \verb https://github.com/UPM-Robotics/uarm
+      \endverb
+    \endentry
+    \entry{travisdewolf_robot_2013}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=6aa0e34c41294a4faef9faadb782d223}{%
+           family={{travisdewolf}},
+           familyi={t\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{6aa0e34c41294a4faef9faadb782d223}
+      \strng{fullhash}{6aa0e34c41294a4faef9faadb782d223}
+      \strng{bibnamehash}{6aa0e34c41294a4faef9faadb782d223}
+      \strng{authorbibnamehash}{6aa0e34c41294a4faef9faadb782d223}
+      \strng{authornamehash}{6aa0e34c41294a4faef9faadb782d223}
+      \strng{authorfullhash}{6aa0e34c41294a4faef9faadb782d223}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Jacobian matrices are a super useful tool, and heavily used throughout robotics and control theory. Basically, a Jacobian defines the dynamic relationship between two different representations of a…}
+      \field{journaltitle}{studywolf}
+      \field{month}{9}
+      \field{shorttitle}{Robot control part 2}
+      \field{title}{Robot control part 2: {Jacobians}, velocity, and force}
+      \field{urlday}{17}
+      \field{urlmonth}{11}
+      \field{urlyear}{2019}
+      \field{year}{2013}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb Snapshot:/home/javinator9889/Zotero/storage/QYS68MFH/robot-control-jacobians-velocity-and-force.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://studywolf.wordpress.com/2013/09/02/robot-control-jacobians-velocity-and-force/
+      \endverb
+      \verb{url}
+      \verb https://studywolf.wordpress.com/2013/09/02/robot-control-jacobians-velocity-and-force/
       \endverb
     \endentry
   \enddatalist
