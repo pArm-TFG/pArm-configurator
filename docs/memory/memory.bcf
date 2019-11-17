@@ -2007,8 +2007,10 @@
     <bcf:citekey order="9">noauthor_uarm_2019-1</bcf:citekey>
     <bcf:citekey order="10">noauthor_uarm_2019-1</bcf:citekey>
     <bcf:citekey order="11">travisdewolf_robot_2013</bcf:citekey>
-    <bcf:citekey order="12">noauthor_uarm_2019-1</bcf:citekey>
+    <bcf:citekey order="12">travisdewolf_robot_2013</bcf:citekey>
     <bcf:citekey order="13">noauthor_uarm_2019-1</bcf:citekey>
+    <bcf:citekey order="14">noauthor_uarm_2019-1</bcf:citekey>
+    <bcf:citekey order="15">noauthor_moorepenrose_2019</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
