@@ -248,11 +248,7 @@ class UArmInverseKinematics:
             sqrt(1 - (cos_t3 ** 2))
         )
         self.theta_1 = atan2(self.Y_e, self.X_e + params.Tx + params[0]['d'])
-        self.theta_3 = atan2(
-            sin_t3
-            /
-            cos_t3
-        )
+        self.theta_3 = atan2(sin_t3, cos_t3)
         self.theta_2 = self.phi + self.theta_3
 
     def eval(self,
