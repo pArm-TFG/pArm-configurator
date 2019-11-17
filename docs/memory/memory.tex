@@ -608,14 +608,14 @@ Usando la ecuación \ref{eq:XeYeZe}, podemos despejar:
 \begin{align*}
     X_e^2 + Z_e^2 & = a_2^2 + a_3^2 - 2a_2a_3\cos(\beta) =          \\
                   & = a_2^2 + a_3^2 - 2a_2a_3\cos(\pi - \theta_3) = \\
-                  & = a_2^2 + a_3^2 + 2a_2a_3\cos(\theta_3)         \\
+                  & = a_2^2 + a_3^2 + 2a_2a_3\cos(\theta_3)
 \end{align*}
 \begin{align}
     \cos(\theta_3)           & = \frac{X_e^2 + Z_e^2 - a_2^2 - a_3^2}{2a_2a_3} \label{eq:cos_theta_3} \\
     \sin(\theta_3)           & = \sqrt{1 - \cos^2(\theta_3)} \label{eq:sin_theta_3}                   \\
     \Longrightarrow \theta_3 & = \arctan\left(\frac{\sin(\theta_3)}{\cos(\theta_3)}\right)
     \label{eq:theta_3}                                                                                \\
-    \Longrightarrow \theta_2 & = \phi_{23} + \theta_3 \label{eq:theta_2}                                 \\
+    \Longrightarrow \theta_2 & = \phi_{23} + \theta_3 \label{eq:theta_2}
 \end{align}
 
 Finalmente, en el plano $XY$ tenemos la siguiente configuración:
@@ -638,7 +638,7 @@ De este modo, aplicando el teorema de Pitágoras\footnote
 \end{align*}
 \begin{align}
     \theta_1 & = \arctan\left(\frac{\cfrac{Y_e}{\sqrt{(X_e + T_X)^2 + Y_e^2 + d_1}}}{\cfrac{X_e + T_X}{\sqrt{(X_e + T_X)^2 + Y_e^2 + d_1}}}\right) \\
-             & = \arctan\left(\frac{Y_e}{X_e + T_X + d_1}\right) \label{eq:theta_1}                                                                \\
+             & = \arctan\left(\frac{Y_e}{X_e + T_X + d_1}\right) \label{eq:theta_1}
 \end{align}
 
 De esta forma, un algoritmo de obtención de la inversa sería:

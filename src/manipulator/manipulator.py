@@ -33,8 +33,23 @@ from . import DHTable
 from . import to_latrix
 
 
-class DirectKinematics:
+class ForwardKinematics:
+    """
+    Container for the Forward Kinematics (FK) for an arbitrary manipulator.
+    By using the Denavit-Hartenberg table, generates the required matrices
+    in order to use them later.
+    Refer to: https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters
+    for more information.
+    """
     def __init__(self, params: DHTable, optimize: bool = True):
+        """
+        Generates a new instance for the class. It calculates the forward
+        transformation matrices (symbolically) in order to use them later
+        and not calculating them every time they are needed.
+        The accessible params are:
+        :param params:
+        :param optimize:
+        """
         self.params = params
         self.transformation_matrices: Dict[str, Matrix] = {}
         self._calc_matrices(optimize)
@@ -85,10 +100,10 @@ class DirectKinematics:
 
 
 class InverseKinematics:
-    def __init__(self, direct_kinematics: DirectKinematics, phi_e: dict = None):
-        self._end_effector_matrix = direct_kinematics[f"A0{direct_kinematics.params.max}"]
+    def __init__(self, forward_kinematics: ForwardKinematics, phi_e: dict = None):
+        self._end_effector_matrix = forward_kinematics[f"A0{forward_kinematics.params.max}"]
         self._phi_e = phi_e if phi_e is not None else dict()
-        self.params = direct_kinematics.params
+        self.params = forward_kinematics.params
         self.Xe = self._end_effector_matrix[0, 3]
         self.Ye = self._end_effector_matrix[1, 3]
         self.Ze = self._end_effector_matrix[2, 3]
@@ -165,7 +180,7 @@ class UArmInverseKinematics:
 class Manipulator:
     def __init__(self, params: DHTable, optimize: bool = True):
         self.params = params
-        self.direct_kinematics = DirectKinematics(params, optimize)
+        self.direct_kinematics = ForwardKinematics(params, optimize)
         self.inverse_kinematics = InverseKinematics(self.direct_kinematics)
         self.uarm_ik = UArmInverseKinematics(params)
 
