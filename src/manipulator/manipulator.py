@@ -41,14 +41,21 @@ class ForwardKinematics:
     Refer to: https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters
     for more information.
     """
+
     def __init__(self, params: DHTable, optimize: bool = True):
         """
         Generates a new instance for the class. It calculates the forward
         transformation matrices (symbolically) in order to use them later
         and not calculating them every time they are needed.
         The accessible params are:
-        :param params:
-        :param optimize:
+         - params: DHTable.
+         - transformation_matrices: dict with the forward transformation matrices.
+         - phi_e: expression for phi_e.
+
+         Matrices are accessible by using square brackets: fk["A03"].
+        :param params: the Denavit-Hartenberg params.
+        :param optimize: whether to optimize or not the matrices - requires more
+        computation time - default: True
         """
         self.params = params
         self.transformation_matrices: Dict[str, Matrix] = {}
@@ -56,6 +63,11 @@ class ForwardKinematics:
         self.phi_e = None
 
     def _calc_matrices(self, optimize: bool):
+        """
+        Internal function which iteratively calculates the required transformation
+        matrices.
+        :param optimize: whether to optimize or not the matrices.
+        """
         for i, theta, d, a, alpha in self.params:
             self.transformation_matrices[f"A{i - 1}{i}"] = \
                 self._matrix(theta, d, a, alpha)
@@ -70,17 +82,28 @@ class ForwardKinematics:
         self.transformation_matrices[f"A0{self.params.max}"][2, 3] += self.params.Tz
 
     def set_phi(self, expression: Union[Symbol, Number]):
+        """
+        Sets the phi_e expression.
+        :param expression: expression - can be a Symbol or a number.
+        """
         self.phi_e = expression
 
-    def point(self, symbols: Dict[Symbol, Any],
+    def point(self,
+              subs: Dict[Symbol, Any],
               matrix_index: str = None) -> Tuple[Number, Number, Number, Any]:
+        """
+        Obtain the (X, Y, Z, Phi) coordinates by changing the articulations.
+        :param subs: the articulations' values.
+        :param matrix_index: the transformation matrix in which apply the values.
+        By default, it is the forward transformation matrix.
+        :return: (X, Y, Z, Phi) as a tuple.
+        """
         if matrix_index is None:
             matrix_index = f"A0{self.params.max}"
-        print(self.transformation_matrices[matrix_index].subs(symbols), end=' * ')
-        return self.transformation_matrices[matrix_index].subs(symbols)[0, 3], \
-               self.transformation_matrices[matrix_index].subs(symbols)[1, 3], \
-               self.transformation_matrices[matrix_index].subs(symbols)[2, 3], \
-               self.phi_e.subs(symbols) if self.phi_e is not None else None
+        return self.transformation_matrices[matrix_index].subs(subs)[0, 3], \
+               self.transformation_matrices[matrix_index].subs(subs)[1, 3], \
+               self.transformation_matrices[matrix_index].subs(subs)[2, 3], \
+               self.phi_e.subs(subs) if self.phi_e is not None else None
 
     def __getitem__(self, item):
         return self.transformation_matrices.get(item)
@@ -90,6 +113,14 @@ class ForwardKinematics:
                 d: Union[Symbol, float],
                 a: Union[Symbol, float],
                 alpha: Union[Symbol, float]) -> Matrix:
+        """
+        Forward transformation matrix template.
+        :param theta: "theta" param.
+        :param d: 'd' param.
+        :param a: 'a' param.
+        :param alpha: "alpha" param.
+        :return: the forward transformation matrix.
+        """
         return Matrix(
             [[cos(theta), - cos(alpha) * sin(theta), sin(alpha) * sin(theta),
               a * cos(theta)],
@@ -101,7 +132,8 @@ class ForwardKinematics:
 
 class InverseKinematics:
     def __init__(self, forward_kinematics: ForwardKinematics, phi_e: dict = None):
-        self._end_effector_matrix = forward_kinematics[f"A0{forward_kinematics.params.max}"]
+        self._end_effector_matrix = forward_kinematics[
+            f"A0{forward_kinematics.params.max}"]
         self._phi_e = phi_e if phi_e is not None else dict()
         self.params = forward_kinematics.params
         self.Xe = self._end_effector_matrix[0, 3]
