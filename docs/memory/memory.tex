@@ -29,6 +29,7 @@
 \usepackage{siunitx}
 \usepackage{wrapfig}
 \usepackage{amssymb}
+\usepackage{listings}
 
 \newcommand*{\field}[1]{\mathbb{#1}}%
 
@@ -439,6 +440,22 @@ De esta forma, obtendríamos las siguientes ecuaciones para $(X_e ~ Y_e ~ Z_e)$:
     \right\}
 \end{equation}
 
+Además, debido al diseño geométrico de este brazo robótico, la orientación del
+\textit{end-effector} es siempre perpendicular al suelo ($\phi_e = \frac{\pi}{2}$),
+pero esto no aporta información útil al robot, ya que mantiene siempre esta orientación
+(véase las figuras \ref{fig:robot_config} y \ref{fig:axis}). Por este motivo,
+durante el desarrollo posterior se asumirá que:
+
+\begin{equation} \label{eq:phie_phi23}
+    \phi_e = \phi_{23} = \theta_2 - \theta_3
+\end{equation}
+
+y que, por consiguiente, los puntos útiles en este brazo robótico son:
+
+\begin{equation} \label{eq:XeYeZePhie}
+    P = (X_e, Y_e, Z_e, \phi_{23})
+\end{equation}
+
 \newpage
 
 \section{Cinemática inversa}
@@ -558,8 +575,13 @@ Así, se pueden extraer $\theta_2$ y $\theta_3$:
 
 \begin{align}
     \pi    & = \beta + \theta_3 \Longrightarrow \beta = \pi - \theta_3 \\
-    \phi_e & = \theta_2 - \theta_3
+    \phi_{23} & = \theta_2 - \theta_3
 \end{align}
+
+En este caso, $\phi_e$ siempre va a ser $\frac{\pi}{2}$, por lo que no podemos obtener
+directamente el valor de $\theta_2$, ya que no se puede obtener directamente $\phi_{23}$.
+Por este motivo, como se comentó anteriormente, el valor de $\phi_e = \phi_{23}$
+(véase las ecuaciones \ref{eq:phie_phi23} y \ref{eq:XeYeZePhie}).
 
 Usando la ecuación \ref{eq:XeYeZe}, podemos despejar:
 
@@ -573,7 +595,7 @@ Usando la ecuación \ref{eq:XeYeZe}, podemos despejar:
     \sin(\theta_3)           & = \sqrt{1 - \cos^2(\theta_3)} \label{eq:sin_theta_3}                   \\
     \Longrightarrow \theta_3 & = \arctan\left(\frac{\sin(\theta_3)}{\cos(\theta_3)}\right)
     \label{eq:theta_3}                                                                                \\
-    \Longrightarrow \theta_2 & = \phi_e + \theta_3 \label{eq:theta_2}                                 \\
+    \Longrightarrow \theta_2 & = \phi_{23} + \theta_3 \label{eq:theta_2}                                 \\
 \end{align}
 
 Finalmente, en el plano $XY$ tenemos la siguiente configuración:
@@ -887,5 +909,13 @@ posiciones singulares, pero no puede alcanzarlas debido al diseño físico, no e
 
 \newpage
 \printbibliography
+
+\newpage
+\appendix
+\section{Código Python}
+
+% \begin{lstlisting}[language=Python]{manipulator/dh_table.py}    
+% \end{lstlisting}
+% \lstinputlisting[language=Python]{manipulator/dh_table.py}
 
 \end{document}

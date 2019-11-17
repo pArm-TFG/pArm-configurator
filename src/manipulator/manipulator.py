@@ -35,6 +35,7 @@ class DirectKinematics:
         self.params = params
         self.transformation_matrices: Dict[str, Matrix] = {}
         self._calc_matrices(optimize)
+        self.phi_e = None
 
     def _calc_matrices(self, optimize: bool):
         for i, theta, d, a, alpha in self.params:
@@ -50,10 +51,18 @@ class DirectKinematics:
         self.transformation_matrices[f"A0{self.params.max}"][1, 3] += self.params.Ty
         self.transformation_matrices[f"A0{self.params.max}"][2, 3] += self.params.Tz
 
-    def point(self, symbols: Dict[Symbol, Any], matrix_index: str = None) -> Matrix:
+    def set_phi(self, expression: Union[Symbol, Number]):
+        self.phi_e = expression
+
+    def point(self, symbols: Dict[Symbol, Any],
+              matrix_index: str = None) -> Tuple[Number, Number, Number, Any]:
         if matrix_index is None:
             matrix_index = f"A0{self.params.max}"
-        return self.transformation_matrices[matrix_index].subs(symbols)
+        print(self.transformation_matrices[matrix_index].subs(symbols), end=' * ')
+        return self.transformation_matrices[matrix_index].subs(symbols)[0, 3], \
+               self.transformation_matrices[matrix_index].subs(symbols)[1, 3], \
+               self.transformation_matrices[matrix_index].subs(symbols)[2, 3], \
+               self.phi_e.subs(symbols) if self.phi_e is not None else None
 
     def __getitem__(self, item):
         return self.transformation_matrices.get(item)
@@ -114,7 +123,8 @@ class Manipulator:
         self.direct_kinematics = DirectKinematics(params, optimize)
         self.inverse_kinematics = InverseKinematics(self.direct_kinematics)
 
-    def point(self, symbols: Dict[Symbol, Any], matrix_index: str = None) -> Matrix:
+    def point(self, symbols: Dict[Symbol, Any],
+              matrix_index: str = None) -> Tuple[Number, Number, Number, Any]:
         return self.direct_kinematics.point(symbols, matrix_index)
 
     def set_phi(self, xyz: str, expression: Union[Symbol, Number]):
