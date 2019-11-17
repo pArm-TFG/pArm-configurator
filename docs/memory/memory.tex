@@ -608,14 +608,14 @@ Usando la ecuación \ref{eq:XeYeZe}, podemos despejar:
 \begin{align*}
     X_e^2 + Z_e^2 & = a_2^2 + a_3^2 - 2a_2a_3\cos(\beta) =          \\
                   & = a_2^2 + a_3^2 - 2a_2a_3\cos(\pi - \theta_3) = \\
-                  & = a_2^2 + a_3^2 + 2a_2a_3\cos(\theta_3)
+                  & = a_2^2 + a_3^2 + 2a_2a_3\cos(\theta_3)         \\
 \end{align*}
 \begin{align}
     \cos(\theta_3)           & = \frac{X_e^2 + Z_e^2 - a_2^2 - a_3^2}{2a_2a_3} \label{eq:cos_theta_3} \\
     \sin(\theta_3)           & = \sqrt{1 - \cos^2(\theta_3)} \label{eq:sin_theta_3}                   \\
     \Longrightarrow \theta_3 & = \arctan\left(\frac{\sin(\theta_3)}{\cos(\theta_3)}\right)
     \label{eq:theta_3}                                                                                \\
-    \Longrightarrow \theta_2 & = \phi_{23} + \theta_3 \label{eq:theta_2}
+    \Longrightarrow \theta_2 & = \phi_{23} + \theta_3 \label{eq:theta_2}                                 \\
 \end{align}
 
 Finalmente, en el plano $XY$ tenemos la siguiente configuración:
@@ -638,7 +638,7 @@ De este modo, aplicando el teorema de Pitágoras\footnote
 \end{align*}
 \begin{align}
     \theta_1 & = \arctan\left(\frac{\cfrac{Y_e}{\sqrt{(X_e + T_X)^2 + Y_e^2 + d_1}}}{\cfrac{X_e + T_X}{\sqrt{(X_e + T_X)^2 + Y_e^2 + d_1}}}\right) \\
-             & = \arctan\left(\frac{Y_e}{X_e + T_X + d_1}\right) \label{eq:theta_1}
+             & = \arctan\left(\frac{Y_e}{X_e + T_X + d_1}\right) \label{eq:theta_1}                                                                \\
 \end{align}
 
 De esta forma, un algoritmo de obtención de la inversa sería:
@@ -888,9 +888,7 @@ los motores adecuadamente.
 Para este manipulador, se han obtenido las expresiones explícitas de la cinemática inversa
 (\textit{IK})\footnote{matrices de la cinemática inversa representadas en el punto 
 \ref{sec:ik}, en particular las ecuaciones \ref{eq:theta_1}, \ref{eq:theta_2} y \ref{eq:theta_3}} y,
-por lo tanto, para cada punto del espacio, se conoce exactamente las coordenadas articulares del mismo.
-En el caso de no conocer las expresiones de la cinemática inversa, se podrían utilizar otros métodos de planificación
-que aproximan la cinemática inversa, por ejemplo mediante el uso de la matriz Jacobiana.
+por lo tanto, para cada punto del espacio y su orientación, se conoce exactamente las coordenadas articulares del mismo.
 
 En el gráfico siguiente se representa cómo, dados dos puntos en el espacio, se puede calcular
 la variación de las coordenadas articulares necesaria para que el manipulador se desplace de un punto al otro:
@@ -908,26 +906,16 @@ sobre las articulaciones para realizar dicho desplazamiento, se realizan los sig
     \item Se aplican las expresiones de cinemática inversa sobre el punto inicial $P_{o} = \left(x_{o}, y_{o}, z_{0}\right)$
           y punto final $P_{f} = \left(x_{f}, y_{f}, z_{f}\right)$ del desplazamiento, de forma que se obtienen las coordenadas
           articulares correspondientes a cada punto $q_{o} = \left({\theta_{1}}_o, {\theta_{2}}_o,{\theta_{3}}_o\right)$ y
-          $q_{f} = \left({\theta_{1}}_f, {\theta_{2}}_f,{\theta_{3}}_f\right)$.
-    \item Para calcular la variación en cada uno de los ángulos, se resta el vector de coordenadas articulares del punto final con las del punto inicial:
-\end{itemize}
-\begin{equation}
-    \Delta q = \left({\theta_{1}}_f - {\theta_{1}}_o,{\theta_{2}}_f -{\theta_{2}}_o,{\theta_{3}}_f - {\theta_{3}}_o\right)
-\end{equation}
-\begin{itemize}
-    \item Se aplica dicha variación de coordenadas articulares $\Delta q$ sobre los motores del manipulador para realizar el desplazamiento.
-\end{itemize}
+          $q_{f} = \left({\theta_{1}}_f, {\theta_{2}}_f,{\theta_{3}}_f\right)$. Para cada uno de los puntos, inicial y final se debe conocer también la  orientación del punto final del manipulador.
+    \Item Una vez se han calculado las coordenadas articulares de cada uno de los puntos de la trayectoria, se deben tener en cuenta numerosos factores que afectan al desplazamiento del manipulador, como por ejemplo son la velocidad del end_effector, las posiciones singulares, la aceleración,etc. Todos estos factores definirán que tipo de trayectoria se emplea y el modo de obtenerla.
 
-Una vez se ha descrito el proceso anterior, basta con aplicarlo de forma secuencial sobre todos los puntos de la
-trayectoria calculados a partir de la función $f_y(x)$, desde el punto inicial $x_{1}$ de la trayectoria hasta el
-punto final $x_{n}$; se consigue pues que las coordenadas articulares vayan variando progresivamente en cada uno
-de los puntos de la trayectoria y por lo tanto el manipulador se desplaza.
+    \Item Existen diversos metodos de planificación de trayectorias, sin embargo todos ellos se fundamentan en la cinemática inversa y directa, en el uso de la matriz jacobiana y su inversa, y por último en el uso de metodos iterativos que aplican estas herramientas para cada punto de la trayectoria.
+    \end{itemize}
 
-Durante este proceso, se debe comprobar el valor de los ángulos de las coordenadas articulares para que estos no
-excedan los límites reales de giro de cada una de las articulaciones. Además, dado que este manipulador tiene
-posiciones singulares, pero no puede alcanzarlas debido al diseño físico, no existe problema al describir la trayectoria.
+Durante la planificación de la trayectoria, se deben tener en cuenta las limitaciones físicas de diseño del manipulador, como pueden ser los rangos máximos de giro de los motores, la velocidad angular máxima de los mismos o el alcance máximo del manipulador.
 
-\newpage
+El proceso descrito anteriormente tambien se puede aplicar a funciones de tres dimensiones, asi como para cualquier trayectoria particular que se quiera describir.
+
 \printbibliography
 
 \newpage
