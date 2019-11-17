@@ -300,6 +300,8 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
 INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/spanish.lbx
 INPUT /usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/spanish.lbx
 INPUT /media/javinator9889/Data/Nextcloud/UNIVERSIDAD/UPM/4.1/RO/uarm/docs/memory/memory.aux

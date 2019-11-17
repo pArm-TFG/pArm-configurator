@@ -117,6 +117,12 @@ class InverseKinematics:
         return self.m_jacobian
 
 
+class ManualInverseKinematics:
+    def __init__(self, expressions: Dict[Symbol, Any]):
+        for key, value in expressions.items():
+            setattr(self, key, value)
+
+
 class Manipulator:
     def __init__(self, params: DHTable, optimize: bool = True):
         self.params = params

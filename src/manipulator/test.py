@@ -20,11 +20,16 @@ from . import DHTable
 from . import Symbol
 from . import pi
 from . import Manipulator
+from . import ManualInverseKinematics
 from . import cos
+from . import sin
 from . import to_latrix
 from sympy import latex
 from sympy import simplify
 from sympy import symbols
+from sympy import atan2
+from sympy import sqrt
+from collections import namedtuple
 
 
 def main():
@@ -33,24 +38,46 @@ def main():
     table.add(theta=t1, d=106.1, a=13.2, alpha=(pi / 2)) \
         .add(theta=t2, d=0, a=142, alpha=pi) \
         .add(theta=t3, d=0, a=158.9, alpha=0)
+    # table.Tx = 44.5
+    # table.Tz = -13.2
     # \
     # .add(theta=((pi / 2) - (Symbol("theta_2") + Symbol("theta_3"))), d=0, a=44.5,
     #      alpha=0)
     # print(table.get())
     print(table)
     m = Manipulator(params=table)
+    print(m.direct_kinematics["A03"])
+    m.direct_kinematics.set_phi(expression=t2 - t3)
     c1 = m.point({t1: 0, t2: 0, t3: 0})
-    c2 = m.point({t1: 0, t2: pi / 2, t3: 0})
+    c2 = m.point({t1: 0, t2: -pi / 2, t3: pi / 2 + 10})
     c3 = m.point({t1: -pi / 2, t2: 0, t3: 0})
     c4 = m.point({t1: pi, t2: pi / 2, t3: pi / 4})
     print("(0, 0, 0)")
     print(c1)
-    print("(0, pi/2, 0)")
+    print("(0, -pi/2, pi / 2 + 10)")
     print(c2)
     print("(-pi/2, 0, 0)")
     print(c3)
     print("(pi, pi/2, pi/4)")
     print(c4)
+
+    Xe, Ye, Ze, phi_23 = symbols("X_e Y_e Z_e phi_{23}")
+    cos_t3 = ((Xe ** 2) + (Ze ** 2) - (142 ** 2) - (158.9 ** 2)) / (2 * 142 * 158.9)
+    sin_t3 = sqrt(1 - (cos_t3 ** 2))
+    Ik = namedtuple("Ik", ['t1', 't2', 't3'])
+    inv = Ik(t1=atan2(Ye, Xe + 106.1),
+             t2=phi_23 - t3,
+             t3=atan2(sin_t3, cos_t3))
+    p1 = {Xe: 13.2 - 158.9*cos(10), Ye: 0, Ze: 158.9*sin(10) - 35.9, phi_23: -10 - pi}
+    print(f"t1: {inv.t1.subs(p1).evalf(chop=True)}")
+    print(f"t3: {inv.t3.subs(p1).evalf(chop=True)}")
+    rs = inv.t3.subs(p1)
+    p1[t3] = rs
+    print(f"t2: {inv.t2.subs(p1).evalf(chop=True)}")
+
+    print(m.point({t1: inv.t1.subs(p1).evalf(chop=True),
+                   t2: inv.t2.subs(p1).evalf(chop=True),
+                   t3: inv.t3.subs(p1).evalf(chop=True)}))
 
     # table2 = DHTable()
     # table2.add(theta=Symbol("theta_1"), d=Symbol("a_1"),
