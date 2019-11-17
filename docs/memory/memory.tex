@@ -722,6 +722,54 @@ lo cual nos conduce a que no hay puntos críticos en este brazo robótico:
     \end{pmatrix}
 \end{align*}
 
+\section{Planificación y Descripción de una trayectoria}
+\label{sec:Trajectory}
+
+Una trayectoria es el recorrido que debe describir un manipulador para cambiar su posición de un punto a otro. La trayectoria que describe un manipulador esta formada por un conjunto puntos cartesianos en el espacio, es decir puntos con tres coordenadas espaciales.
+
+Para este caso, la trayectoria que va a describir el manipulador se define como:
+
+\begin{equation}
+	T = \left\{,x_{1},x_{2},\cdots x_{n}\right\} con  x\in\R^3
+\end{equation}
+
+Un caso de interés a la hora de definir una trayectoria, es la de que los puntos del recorrido esten definidos por una funcion matemática $f(x)$ de dos dimensiones. Dado que esta trayectoria se define en un plano, una de las coordenadas se fija a cero. En el caso de usar $y = f1(x)$, el valor de la coordenada z se fijaría a cero y por lo tanto la trayectoria estaria contenida en el plano XY. De igual forma, en el caso de usar $z = f2(x)$, el valor de la coordenada y se fijaría a cero y por lo tanto la trayectoria estaria contenida en el plano XZ.
+
+En este caso y para simplificar la situacion, la trayectoria se va describir en el plano XY, siendo tambien posible aplicar este razonamiento para los planos XZ o YZ. Para obtener los puntos de la trayectoria, se debe muestrear la funcion $y = f(x)$ para ciertos valores de $x$ y de esta forma se obtendrian los puntos $x_{i} = (x,f(x),0)$.
+
+Dado que el $\mu Arm$ tiene una precisión minima de movimiento de 0.2mm (en su end-effector), la funcion $f(x)$ se va a muestrear para valores de $x$ siguiendo la expresion $x_{i} = x_{i-1} + 0.2*k$ con $k$\in\N. De esta manera, para cada valor de $x$ se obtiene un valor de $y$ y dado que $z$ es siempre nulo, se obtienen todos los puntos de la trayectoria.
+
+Una vez se ha definido la trayectoria, el manipulador debe de moverse de un punto a otro, siguiendo todos los puntos de la misma, para asi poder describir la funcion matemática. Para que esto ocurra, se debe determinar las coordenadas articulares de los ejes de giro para todos y cada uno de los puntos, y de esta forma, se podra controlar los motores de forma adecuada.
+
+Para este manipulador, se han obtenido las expresiones explicitas de la cinematica inversa (IK) y por lo tanto, para cada punto del espacio, se conoce exactamente las coordenadas articulares del mismo. En el caso de no conocer las expresiones de la cinematica inversa, se podrian utilizar otros metodos de planficacion que aproximan la cinematica inversa, por ejemplo mediante el uso de la matriz jacobiana.
+
+En el grafico siguiente se representa como dados dos puntos en el espacio, se puede calcular 
+la variacion de las coordenadas articulares necesaria para que el manipulador se desplace de un punto al otro:
+
+\begin{figure}[H]
+            \centering
+            \includegraphics[width=\linewidth]{images/Trayectoria.png}
+            \caption{rango del manipulador \emph{{\textmu}Arm} \cite{noauthor_uarm_2019}}
+            \label{fig:range}
+\end{figure}
+
+Dado el punto inicial y punto final de un desplazamiento, se quiere calcular la variacion que hay que aplicar sobre las articulaciones para realizar el desplazamiento, se realizan pues los siguientes calculos:
+\begin{itemize}
+\item Se aplican las expresiones de cinematica inversa sobre el punto inicial $P_{o} = (x_{o}, y_{o}, z_{0})$ y punto final $P_{f} = (x_{f}, y_{f}, z_{f})$ del desplazamiento, de esta forma se obtienen las coordenadas articulares correspondientes a cada punto $q_{o} = (\theta_{1}_o, \theta_{2}_o,\theta_{3}_o)$ y $q_{f} = (\theta_{1}_f, \theta_{2}_f,\theta_{3}_f)$.
+\item Para calcular la variacion en cada uno de los angulos, se resta el vector de coordenadas articulares del punto final menos las del punto inicial:
+\begin{equation}
+\Delta q = (\theta_{1}_f - \theta_{1}_o,\theta_{2}_f -\theta_{2}_o,\theta_{3}_f - \theta_{3}_o)
+\end{equation} 
+\
+\item Se aplica dicha variacion de coordenadas articulares $\Delta q$ sobre los motores del manipulador para realizar el desplazamiento.	
+\end{itemize}
+
+Una vez se ha descrito el proceso anterior, basta con aplicarlo de forma secuencial sobre todos los puntos de la trayectoria calculados a partir de la funcion $f(x)$, desde el punto inicial $x_{1}$ de la trayectoria hasta el punto final $x_{n}$; se consigue pues que las coordenadas articulares vayan variando progresivamente en cada uno de los puntos de la trayectoria y por lo tanto el manipualdor se desplaza.
+
+Durante este proceso, se debe comprobar el valor de los angulos de las coordenadas articulares para que estos no excedan los limites reales de giro de cada una de las articulaciones. Además, dado que este manipulador tiene posiciones singulares, pero no puede alcanzarlas debido al diseño fisico, no existe problema al describir la trayectoria.
+
+
+
 \newpage
 \printbibliography
 
