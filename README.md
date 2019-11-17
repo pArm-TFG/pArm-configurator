@@ -37,23 +37,23 @@ El resto de la información pertinence relacionada con el brazo robótico se pue
 
 - [x] Entender el funcionamiento de los manipuladores pantográficos.
 
-- [ ] Cinemática directa del manipulador.
-  - [ ] Estudio de los casos: <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;0),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;0),&space;\vec{q}&space;=&space;(-\pi/2,&space;\pi/2,&space;a)&space;\vec{q}=&space;(\pi,&space;0,&space;a/2)" title="\vec{q} = (0, 0, 0), \vec{q} = (0, \pi/2, 0), \vec{q} = (-\pi/2, \pi/2, a), \vec{q}= (\pi, 0, a/2)" />
+- [x] Cinemática directa del manipulador.
+  - [] Estudio de los casos: <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;0),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;0),&space;\vec{q}&space;=&space;(-\pi/2,&space;\pi/2,&space;a)&space;\vec{q}=&space;(\pi,&space;0,&space;a/2)" title="\vec{q} = (0, 0, 0), \vec{q} = (0, \pi/2, 0), \vec{q} = (-\pi/2, \pi/2, a), \vec{q}= (\pi, 0, a/2)" />
   - [x] Función que implementa la cinemática directa del manipulador <img src="https://latex.codecogs.com/png.latex?A_0^3" title="A_0^3" />
 
-- [ ] Cinemática inversa
+- [x] Cinemática inversa
   - [x] Ecuaciones de la cinemática inversa del manipulador.
-  - [ ] Función que implementa dicha cinemática - devuelve una lista con todos los posibles valores de los parámetros.
+  - [x] Función que implementa dicha cinemática - devuelve una lista con todos los posibles valores de los parámetros.
 
-- [ ] Función Jacobiana
-  - [ ] Matriz Jacobiana en el estudio de los casos <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;a/2),&space;\vec{q}&space;=&space;(0,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(\pi/4,&space;-\pi/4,&space;0),&space;\vec{q}&space;=&space;(-\pi/90,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(-\pi/4,&space;\pi/4,&space;0)&space;y&space;\vec{q}&space;=&space;(\pi/90,&space;-\pi/90,&space;a/100),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;a/2),&space;\vec{q}&space;=&space;(\pi/90,&space;0,&space;-a/100)" title="\vec{q} = (0, 0, a/2), \vec{q} = (0, \pi/90, 0), \vec{q} = (\pi/4, -\pi/4, 0), \vec{q} = (-\pi/90, \pi/90, 0), \vec{q} = (-\pi/4, \pi/4, 0), \vec{q} = (\pi/90, -\pi/90, a/100), \vec{q} = (0, \pi/2, a/2), \vec{q} = (\pi/90, 0, -a/100)" /> y su expresión gráfica.
+- [x] Función Jacobiana
+  - [x] Matriz Jacobiana en el estudio de los casos <img src="https://latex.codecogs.com/png.latex?\vec{q}&space;=&space;(0,&space;0,&space;a/2),&space;\vec{q}&space;=&space;(0,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(\pi/4,&space;-\pi/4,&space;0),&space;\vec{q}&space;=&space;(-\pi/90,&space;\pi/90,&space;0),&space;\vec{q}&space;=&space;(-\pi/4,&space;\pi/4,&space;0)&space;y&space;\vec{q}&space;=&space;(\pi/90,&space;-\pi/90,&space;a/100),&space;\vec{q}&space;=&space;(0,&space;\pi/2,&space;a/2),&space;\vec{q}&space;=&space;(\pi/90,&space;0,&space;-a/100)" title="\vec{q} = (0, 0, a/2), \vec{q} = (0, \pi/90, 0), \vec{q} = (\pi/4, -\pi/4, 0), \vec{q} = (-\pi/90, \pi/90, 0), \vec{q} = (-\pi/4, \pi/4, 0), \vec{q} = (\pi/90, -\pi/90, a/100), \vec{q} = (0, \pi/2, a/2), \vec{q} = (\pi/90, 0, -a/100)" /> y su expresión gráfica.
   - [x] Función que devuelve la matriz Jacobiana del manipulador dadas las coordenadas articulares.
 
-- [ ] Singularidades y generación de trayectorias
+- [x] Singularidades y generación de trayectorias
   - [x] Determinar las configuraciones singulares.
-  - [ ] Función que devuelva una lista de coordinadas articulares las cuales, aplicadas en secuencia, permiten hacer que el manipulador describa una determinada trayectoria (función matemática).
+  - [weno un poco] Función que devuelva una lista de coordinadas articulares las cuales, aplicadas en secuencia, permiten hacer que el manipulador describa una determinada trayectoria (función matemática).
 
-- [ ] Representación gráfica de los resultados.
+- [x] Representación gráfica de los resultados.
 
 ## Otros recursos
 
