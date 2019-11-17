@@ -220,7 +220,23 @@ class InverseKinematics:
 
 
 class UArmInverseKinematics:
+    """
+    uArm Inverse Kinematics class wrapper for the uArm robotic arm.
+    Accessible values are:
+     - X_e: X value.
+     - Y_e: Y value.
+     - Z_e: Z value.
+     - phi: phi value.
+     - theta_1: expression for theta_1.
+     - theta_2: expression for theta_2.
+     - theta_3: expression for theta_3.
+    """
+
     def __init__(self, params: DHTable):
+        """
+        Generates a new instance for the uArmInverseKinematics class.
+        :param params: the Denavit-Hartenberg params.
+        """
         self.X_e, self.Y_e, self.Z_e, self.phi = symbols("X_e Y_e Z_e phi_e")
         cos_t3 = (
                 (self.X_e ** 2) + (self.Z_e ** 2) -
@@ -246,6 +262,15 @@ class UArmInverseKinematics:
              phi: Union[Symbol, Number]) -> Tuple[Union[Symbol, Number],
                                                   Union[Symbol, Number],
                                                   Union[Symbol, Number]]:
+        """
+        With a given point, returns the joints at which the robotic arm achieves
+        that position.
+        :param Xe: X position.
+        :param Ye: Y position.
+        :param Ze: Z position.
+        :param phi: phi value.
+        :return: (theta_1, theta_2, theta_3) as a tuple.
+        """
         subs = {self.X_e: Xe, self.Y_e: Ye, self.Z_e: Ze, self.phi: phi}
         theta_1 = self.theta_1.subs(subs).evalf(chop=True)
         theta_3 = self.theta_3.subs(subs).evalf(chop=True)
