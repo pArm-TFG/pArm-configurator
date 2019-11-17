@@ -40,6 +40,11 @@ class ForwardKinematics:
     in order to use them later.
     Refer to: https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters
     for more information.
+    The accessible params are:
+         - params: DHTable.
+         - transformation_matrices: dict with the forward transformation matrices.
+         - phi_e: expression for phi_e.
+    Matrices are accessible by using square brackets: fk["A03"].
     """
 
     def __init__(self, params: DHTable, optimize: bool = True):
@@ -47,12 +52,6 @@ class ForwardKinematics:
         Generates a new instance for the class. It calculates the forward
         transformation matrices (symbolically) in order to use them later
         and not calculating them every time they are needed.
-        The accessible params are:
-         - params: DHTable.
-         - transformation_matrices: dict with the forward transformation matrices.
-         - phi_e: expression for phi_e.
-
-         Matrices are accessible by using square brackets: fk["A03"].
         :param params: the Denavit-Hartenberg params.
         :param optimize: whether to optimize or not the matrices - requires more
         computation time - default: True
@@ -131,7 +130,36 @@ class ForwardKinematics:
 
 
 class InverseKinematics:
+    """
+    Container for the Inverse Kinematics (IK) for an arbitrary manipulator.
+    By using the Forward Kinematics for that manipulator, generates and
+    calculates the Jacobian matrix that can be used for both direct
+    manipulation and inverse manipulation, relating linear speed (end-effector)
+    and angular speed (joints).
+
+    The accessible params are:
+     - params: the DHTable params.
+     - Xe: expression for X.
+     - Ye: expression for Y.
+     - Ze: expression for Z.
+     - det: the determinant of the Jacobian.
+     - upper_jacobian: the first part of the Jacobian matrix (linear velocity).
+     - lower_jacobian: the lower part of the Jacobian matrix (angular velocity).
+     - m_jacobian: Jacobian matrix.
+     - i_jacobian: inverse Jacobian.
+     - pinv_jacobian: pseudo-inverse Jacobian.
+
+    For accessing the inverse matrix, it is better to use the "inverse" property,
+    as it will return the pseudo-inverse or the inverse, in case the latest one
+    does not exists.
+    """
+
     def __init__(self, forward_kinematics: ForwardKinematics, phi_e: dict = None):
+        """
+        Generates a new instance for the inverse kinematics class.
+        :param forward_kinematics: the forward kinematics for the manipulator.
+        :param phi_e: the Phi_e dict which relates the 'x', 'y' and 'z' expressions.
+        """
         self._end_effector_matrix = forward_kinematics[
             f"A0{forward_kinematics.params.max}"]
         self._phi_e = phi_e if phi_e is not None else dict()
@@ -147,20 +175,33 @@ class InverseKinematics:
         self.pinv_jacobian = None
 
     def set_phi(self, xyz: str, expression: Union[Symbol, Number]):
+        """
+        Sets the Phi_e expression, which relates the angle to an axis.
+        :param xyz: the axis in which update the expression - must be: {'x', 'y', 'z'}.
+        :param expression: the expression for the Phi - can be a number or an expression.
+        :raises AttributeError when xyz not in 'x', 'y', 'z'.
+        """
         if xyz.lower() not in ['x', 'y', 'z']:
             raise AttributeError("xyz attribute must be ['x', 'y', 'z']")
         self._phi_e[xyz.lower()] = expression
 
-    def jacobian(self, symbols: list = None) -> Matrix:
+    def jacobian(self, subs: list = None) -> Matrix:
+        """
+        Calculates the Jacobian matrix. If the determinant is '0', then it
+        calculates the pseudo-inverse.
+        :param subs: list of symbols that will be used for calculating the
+        difference for the Jacobian.
+        :return: the Jacobian matrix.
+        """
         smatrix = Matrix([self.Xe,
                           self.Ye,
                           self.Ze,
                           self._phi_e['x'],
                           self._phi_e['y'],
                           self._phi_e['z']])
-        if symbols is None:
-            symbols = self.params.symbols
-        self.m_jacobian = smatrix.jacobian(symbols)
+        if subs is None:
+            subs = self.params.symbols
+        self.m_jacobian = smatrix.jacobian(subs)
         self.upper_jacobian = self.m_jacobian[:3, :]
         self.lower_jacobian = self.m_jacobian[3:, :]
         self.det = self.upper_jacobian.det().simplify()
@@ -172,6 +213,9 @@ class InverseKinematics:
 
     @property
     def inverse(self):
+        """
+        :return: the inverse Jacobian.
+        """
         return self.pinv_jacobian if self.i_jacobian is None else self.i_jacobian
 
 
