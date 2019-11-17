@@ -120,24 +120,16 @@ El manipulador es controlado mediante cuatro motores:
 El \textbf{motor de la base} el cual permite la rotación del manipulador.
 
 En el brazo, el \textbf{motor que está a la derecha} (ver la figura \ref{fig:motors}),
-coordina el movimiento de la parte inferior del brazo (\textit{Lower Arm} en la figura)
-con la parte superior del mismo (\textit{Upper Arm} en la figura).
+coordina el movimiento de la parte inferior del brazo (\textit{Lower Arm} en la figura).
 
 En esta parte del manipulador, el movimiento es como el de un flexo: la parte superior
 del flexo está supeditada a la parte inferior, de manera que se mantiene de forma
 constante la altura a la que está el extremo final del mismo.
 
-El otro motor, localizado a la \textbf{izquierda del brazo}, se encarga de mantener la
-orientación del extremo del manipulador. De esta manera, dicho extremo
-permanecerá paralelo al suelo. Teniendo en cuenta esto, podríamos decir
-que el robot en verdad solo tiene tres grados de libertad en tanto a que no se
-controla directamente el movimiento del último grado, ya que al final se mueve
-para permanecer paralelo al suelo.
+El otro motor \textbf{izquierda del brazo}, localizado a la izquierda de la imagen, se encarga de controlar la parte superior (\textit{Upper Arm} en la figura) del brazo mediante una junta que controla la estructura triangular superior. 
+Cabe destacar que dado que la articulación situada en el extremo de la parte superior del manipulador no es controlable, esta se mantiene siempre paralela al suelo y con orientacion hacia delante. Debido a esta opción de diseño, el manipulador se simplifica y se reduce un grado de libertad, teniendo el manipulador tres grados de libertad (base, parte inferior y parte superior).
 
-El \textbf{motor localizado en el extremo}, con el cual se puede actuar sobre el
-elemento que esté colocado allí. Por ejemplo, cuando se coloca una ventosa
-permite rotarla o, cuando se coloca la pinza, el movimiento del motor permite
-abrirla o cerrarla.
+El \textbf{motor localizado en el extremo}, se encuentra incluido en el end-effector y se utiliza para dotar de movimiento independiente al mismo. Por ejemplo, cuando se coloca una ventosa permite rotarla,cuando se coloca la pinza, el movimiento del motor permite abrirla o cerrarla.
 
 Para este estudio, este último motor se descartará, ya que no afecta a las
 posiciones accesibles por el robot.
