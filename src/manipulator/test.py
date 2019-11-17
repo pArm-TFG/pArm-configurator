@@ -21,6 +21,7 @@ from . import Manipulator
 
 from sympy import Matrix
 from sympy import symbols
+from sympy import simplify
 
 
 def main():
@@ -29,6 +30,8 @@ def main():
     table.add(theta=t1, d=106.1, a=13.2, alpha=(pi / 2)) \
          .add(theta=t2, d=0, a=142, alpha=pi) \
          .add(theta=t3, d=0, a=158.9, alpha=0)
+    table.Tx = 44.5
+    table.Tz = -13.2
     print("Tabla de Denavit-Hartenberg")
     print(table)
     startt = time()
@@ -49,7 +52,7 @@ def main():
     print(f"q = (pi, pi/2, pi/4)\n{c4}")
     print("Tiempo de cómputo: {:.3f}s".format(endt - startt))
 
-    print("Estudio de la inversa - si el resultado es un número imaginario,"
+    print("Estudio de la inversa - si el resultado es un número imaginario, "
           "entonces es un punto al cual el robot no puede llegar")
     startt = time()
     i1 = manipulator.eval(c1[0], c1[1], c1[2], c1[3])
@@ -91,7 +94,7 @@ def main():
     print("Matriz Jacobiana inversa")
     print(f"Determinante: {manipulator.inverse_kinematics.det}")
 
-    print(manipulator.inverse * j1[:3, :])
-    print(manipulator.inverse * j2[:3, :])
-    print(manipulator.inverse * j3[:3, :])
-    print(manipulator.inverse * j4[:3, :])
+    print(simplify(manipulator.inverse * j1[:3, :]))
+    print(simplify(manipulator.inverse * j2[:3, :]))
+    print(simplify(manipulator.inverse * j3[:3, :]))
+    print(simplify(manipulator.inverse * j4[:3, :]))

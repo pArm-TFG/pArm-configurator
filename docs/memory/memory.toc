@@ -1,0 +1,14 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {spanish}{}
+\contentsline {section}{\numberline {1}Configuraci\IeC {\'o}n geom\IeC {\'e}trica}{4}{section.1}% 
+\contentsline {section}{\numberline {2}Cinem\IeC {\'a}tica directa}{6}{section.2}% 
+\contentsline {section}{\numberline {3}Cinem\IeC {\'a}tica inversa}{8}{section.3}% 
+\contentsline {section}{\numberline {4}Matriz Jacobiana}{12}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}Matriz Jacobiana inversa}{14}{subsection.4.1}% 
+\contentsline {section}{\numberline {5}Planificaci\IeC {\'o}n y descripci\IeC {\'o}n de una trayectoria}{15}{section.5}% 
+\contentsline {section}{\numberline {6}Estudio de diferentes casos}{16}{section.6}% 
+\contentsline {subsection}{\numberline {6.1}Matriz de transformaci\IeC {\'o}n directa}{16}{subsection.6.1}% 
+\contentsline {subsection}{\numberline {6.2}Matriz de transformaci\IeC {\'o}n inversa}{17}{subsection.6.2}% 
+\contentsline {subsection}{\numberline {6.3}Matriz Jacobiana}{17}{subsection.6.3}% 
+\contentsline {subsection}{\numberline {6.4}Matriz Jacobiana inversa}{17}{subsection.6.4}% 
+\contentsline {section}{\numberline {A}C\IeC {\'o}digo Python}{19}{appendix.Alph1}% 

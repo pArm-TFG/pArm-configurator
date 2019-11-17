@@ -23,8 +23,8 @@
       \list{language}{1}{%
         {en}%
       }
-      \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinit}{6}
+      \field{sortinithash}{7851c86048328b027313775d8fbd2131}
       \field{labeltitlesource}{title}
       \field{title}{{uArm} {Swift} {Pro}\_Developer {Guide} v1.0.6.pdf}
       \field{urlday}{2}
@@ -46,8 +46,8 @@
       \list{language}{1}{%
         {en}%
       }
-      \field{sortinit}{3}
-      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{sortinit}{8}
+      \field{sortinithash}{1b24cab5087933ef0826a7cd3b99e994}
       \field{labeltitlesource}{title}
       \field{title}{{uArm}-{Swift}-{Specifications}-171012.pdf}
       \field{urlday}{2}
@@ -69,8 +69,8 @@
       \list{language}{1}{%
         {en}%
       }
-      \field{sortinit}{5}
-      \field{sortinithash}{5dd416adbafacc8226114bc0202d5fdd}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
       \field{labeltitlesource}{title}
       \field{title}{{uArm} pro {User} {Manual} v1.1.0.pdf}
       \field{urlday}{2}
@@ -92,8 +92,8 @@
       \list{publisher}{1}{%
         {Robotics UPM}%
       }
-      \field{sortinit}{7}
-      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
       \field{labeltitlesource}{title}
       \field{abstract}{Práctica de Manipuladores con el robot uArm. Contribute to UPM-Robotics/uarm development by creating an account on GitHub.}
       \field{month}{11}
@@ -154,8 +154,8 @@
       \list{language}{1}{%
         {en}%
       }
-      \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
       \field{labeltitlesource}{title}
       \field{abstract}{In mathematics, and in particular linear algebra, a pseudoinverse A+ of a matrix A is a generalization of the inverse matrix. The most widely known type of matrix pseudoinverse is the Moore–Penrose inverse, which was independently described by E. H. Moore in 1920, Arne Bjerhammar in 1951, and Roger Penrose in 1955. Earlier, Erik Ivar Fredholm had introduced the concept of a pseudoinverse of integral operators in 1903. When referring to a matrix, the term pseudoinverse, without further specification, is often used to indicate the Moore–Penrose inverse. The term generalized inverse is sometimes used as a synonym for pseudoinverse. A common use of the pseudoinverse is to compute a "best fit" (least squares) solution to a system of linear equations that lacks a unique solution (see below under § Applications). Another use is to find the minimum (Euclidean) norm solution to a system of linear equations with multiple solutions. The pseudoinverse facilitates the statement and proof of results in linear algebra. The pseudoinverse is defined and unique for all matrices whose entries are real or complex numbers. It can be computed using the singular value decomposition.}
       \field{journaltitle}{Wikipedia}

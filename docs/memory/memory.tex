@@ -31,7 +31,6 @@
 \usepackage{amssymb}
 \usepackage{listings}
 
-% \usepackage{inconsolata}
 \lstset{
     language=Python,
     basicstyle=\ttfamily\small,
@@ -47,9 +46,12 @@
     breakatwhitespace=true,
     framextopmargin=2pt,
     framexbottommargin=2pt,
-    extendedchars=false,
-    inputencoding=utf8
+    inputencoding=latin1,
+    extendedchars=true,
+    texcl=true,
+    literate={á}{{\'a}}1 {ã}{{\~a}}1 {é}{{\'e}}1,
 }
+
 
 \newcommand*{\field}[1]{\mathbb{#1}}%
 
@@ -93,6 +95,12 @@
     {\large Última modificación: \today}\\[2cm]
     \includegraphics[width=0.5\textwidth]{images/uarm.jpg}\\[1cm]
 \end{titlepage}
+
+\newpage
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
 
 %%%% SECTIONS
 \section*{Conocimientos previos}
@@ -924,6 +932,78 @@ como pueden ser los rangos máximos de giro de los motores, la velocidad angular
 
 El proceso descrito anteriormente también se puede aplicar a funciones de tres dimensiones, así como para cualquier trayectoria particular que se quiera describir.
 
+\section{Estudio de diferentes casos}
+\subsection{Matriz de transformación directa}
+
+Usando la matriz que se ha obtenido en el punto \ref{sec:dk}, en particular la
+matriz \ref{eq:A03_num}, se puede comprobar su funcionamiento introduciendo
+distintas configuraciones en los ángulos que conforman las articulaciones.
+De los ángulos $q_i$ se obtienen $(X_e, Y_e, Z_e, \phi_e)$:
+
+\begin{align*}
+    q &= \left(0, 0, 0\right) \\
+    &\rightarrow \left(358.6, 0, 92.9, 0\right) \\
+    q &= \left(0, -\frac{\pi}{2}, \frac{\pi}{2} + 10\right) \\
+    &\rightarrow \left(57.7 - 158.9cos(10), 0, 158.9sin(10) - 49.1, -10 - \pi\right) \\
+    q &= \left(-\frac{\pi}{2}, 0, 0\right) \\
+    &\rightarrow \left(44.5, -314.1, 92.9, 0\right) \\
+    q &= \left(\pi, \frac{\pi}{2}, \frac{\pi}{4}\right) \\
+    &\rightarrow \left(31.3 - 79.45\sqrt{2}, 0, 79.45\sqrt{2} + 234.9, \frac{\pi}{4}\right)
+\end{align*}
+
+\subsection{Matriz de transformación inversa}
+
+Pese a contar con la matriz de transformación inversa (véase las ecuaciones 
+\ref{eq:theta_1}, \ref{eq:theta_2} y \ref{eq:theta_3}), en el estudio no pudimos
+comprobar los casos de prueba, ya que al no saber la configuración inicial del robot
+no se pudo saber qué angulos eran del brazo robótico (cuando no los puede realizar,
+el resultado es un valor imaginario - en la prueba del código fuente se puede comprobar).
+
+\subsection{Matriz Jacobiana}
+{\centering\begin{align*}
+    q = \left(0, 0, 0\right) \\
+    \begin{pmatrix}
+        0 \\
+        0 \\
+        0 \\
+        0 \\
+        0 \\
+        0
+    \end{pmatrix} \\
+    q = \left(0, -\frac{\pi}{2}, \frac{\pi}{2} + 10\right) \\
+    \begin{pmatrix}
+        158.9\cdot(\frac{\pi}{2} + 10)\cdot\sin(10) - \pi\cdot\frac{142.0 - 158.9\cdot\sin(10)}{2} \\
+        0 \\
+        158.9\cdot(\frac{\pi}{2} + 10)\cdot\cos(10) + 79.45\cdot\pi\cdot\cos(10) \\
+        -10 - \pi \\
+        0 \\
+        0
+    \end{pmatrix} \\
+    q = \left(-\frac{\pi}{2}, 0, 0\right) \\
+    \begin{pmatrix}
+        72.85\pi \\
+        71\pi \\
+        158.9\pi \\
+        - \pi \\
+        0 \\
+        -\frac{\pi}{2}
+    \end{pmatrix} \\
+    q = \left(\pi, 0,0\right) \\
+    \begin{pmatrix}
+        0 \\
+        -314.1\pi \\
+        0 \\
+        0 \\
+        0 \\
+        \pi
+    \end{pmatrix}
+\end{align*}}
+
+\subsection{Matriz Jacobiana inversa}
+
+Al igual que sucedía en el caso anterior de la inversa, al no conocer los ángulos del
+robot salen valores anómalos que no existen y no se obtienen los resultados apropiados.
+
 \newpage
 \printbibliography
 
@@ -934,5 +1014,15 @@ El proceso descrito anteriormente también se puede aplicar a funciones de tres 
 % \begin{lstlisting}[language=Python]{manipulator/dh_table.py}    
 % \end{lstlisting}
 % \lstinputlisting[language=Python]{manipulator/dh_table.py}
+\lstinputlisting[caption=manipulator.py]{manipulator/manipulator.py}
+\lstinputlisting[caption=dh_table.py]{manipulator/dh_table.py}
+\lstinputlisting[caption=__init__.py]{manipulator/__init__.py}
+\lstinputlisting[caption=__main__.py]{manipulator/__main__.py}
+\lstinputlisting[caption=symbols.py]{manipulator/symbols.py}
+\lstinputlisting[caption=tesst.py]{manipulator/test.py}
+\lstinputlisting[caption=utils.py]{manipulator/utils.py}
+
+El código fuente al completo se puede encontrar en GitHub:
+\href{https://github.com/UPM-Robotics/uarm}{https://github.com/UPM-Robotics/uarm}.
 
 \end{document}

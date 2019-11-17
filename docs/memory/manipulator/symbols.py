@@ -17,6 +17,8 @@ from sympy import Symbol
 from sympy import sin
 from sympy import cos
 from sympy import pi
+from sympy import atan2
+from sympy import sqrt
 from sympy.abc import alpha
 from sympy.abc import theta
 from sympy.abc import E

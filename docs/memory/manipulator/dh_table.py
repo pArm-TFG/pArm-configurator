@@ -190,7 +190,7 @@ class DHTable:
                                          "{:>" + str(4 + max(self.__lengths[1])) + "}",
                                          "{:>" + str(4 + max(self.__lengths[2])) + "}",
                                          "{:>" + str(4 + max(self.__lengths[3])) + "}")
-        result = row_format.format('i', "θᵢ", "dᵢ", "aᵢ", "αᵢ") + "\n"
+        result = row_format.format('i', "t", "d", "a", "alpha") + "\n"
         i = 1
         for values in self.__table:
             result += row_format.format(str(i),
