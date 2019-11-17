@@ -19,15 +19,18 @@ from typing import Dict
 from typing import Any
 
 from sympy import Matrix
+from sympy import symbols
 from sympy import simplify
 
 from numbers import Number
 
-from . import to_latrix
-from . import DHTable
-from . import Symbol
 from . import sin
 from . import cos
+from . import sqrt
+from . import atan2
+from . import Symbol
+from . import DHTable
+from . import to_latrix
 
 
 class DirectKinematics:
@@ -94,6 +97,7 @@ class InverseKinematics:
         self.lower_jacobian = None
         self.m_jacobian = None
         self.i_jacobian = None
+        self.pinv_jacobian = None
 
     def set_phi(self, xyz: str, expression: Union[Symbol, Number]):
         if xyz.lower() not in ['x', 'y', 'z']:
@@ -113,14 +117,49 @@ class InverseKinematics:
         self.upper_jacobian = self.m_jacobian[:3, :]
         self.lower_jacobian = self.m_jacobian[3:, :]
         self.det = self.upper_jacobian.det().simplify()
-        self.i_jacobian = simplify(self.upper_jacobian ** -1)
+        if self.det != 0:
+            self.i_jacobian = simplify(self.upper_jacobian ** -1)
+        else:
+            self.pinv_jacobian = self.upper_jacobian.pinv()
         return self.m_jacobian
 
+    @property
+    def inverse(self):
+        return self.pinv_jacobian if self.i_jacobian is None else self.i_jacobian
 
-class ManualInverseKinematics:
-    def __init__(self, expressions: Dict[Symbol, Any]):
-        for key, value in expressions.items():
-            setattr(self, key, value)
+
+class UArmInverseKinematics:
+    def __init__(self, params: DHTable):
+        self.X_e, self.Y_e, self.Z_e, self.phi = symbols("X_e Y_e Z_e phi_e")
+        cos_t3 = (
+                (self.X_e ** 2) + (self.Z_e ** 2) -
+                (params[1]['a'] ** 2) - (params[2]['a'] ** 2)
+                /
+                2 * params[1]['a'] * params[2]['a']
+        )
+        sin_t3 = (
+            sqrt(1 - (cos_t3 ** 2))
+        )
+        self.theta_1 = atan2(self.Y_e, self.X_e + params.Tx + params[0]['d'])
+        self.theta_3 = atan2(
+            sin_t3
+            /
+            cos_t3
+        )
+        self.theta_2 = self.phi + self.theta_3
+
+    def eval(self,
+             Xe: Union[Symbol, Number],
+             Ye: Union[Symbol, Number],
+             Ze: Union[Symbol, Number],
+             phi: Union[Symbol, Number]) -> Tuple[Union[Symbol, Number],
+                                                  Union[Symbol, Number],
+                                                  Union[Symbol, Number]]:
+        subs = {self.X_e: Xe, self.Y_e: Ye, self.Z_e: Ze, self.phi: phi}
+        theta_1 = self.theta_1.subs(subs).evalf(chop=True)
+        theta_3 = self.theta_3.subs(subs).evalf(chop=True)
+        theta_2 = self.theta_2.subs(subs).evalf(chop=True)
+        return theta_1, theta_2, theta_3
 
 
 class Manipulator:
@@ -128,6 +167,7 @@ class Manipulator:
         self.params = params
         self.direct_kinematics = DirectKinematics(params, optimize)
         self.inverse_kinematics = InverseKinematics(self.direct_kinematics)
+        self.uarm_ik = UArmInverseKinematics(params)
 
     def point(self, symbols: Dict[Symbol, Any],
               matrix_index: str = None) -> Tuple[Number, Number, Number, Any]:
@@ -139,9 +179,18 @@ class Manipulator:
     def jacobian(self, symbols: list = None) -> Matrix:
         return self.inverse_kinematics.jacobian(symbols)
 
-    def solve(self, xyz: Tuple[float, float, float], phi: Symbol):
-        pass
-        # return self.inverse_kinematics.solve(xyz, phi)
+    @property
+    def inverse(self):
+        return self.inverse_kinematics.inverse
+
+    def eval(self,
+             Xe: Union[Symbol, Number],
+             Ye: Union[Symbol, Number],
+             Ze: Union[Symbol, Number],
+             phi: Union[Symbol, Number]) -> Tuple[Union[Symbol, Number],
+                                                  Union[Symbol, Number],
+                                                  Union[Symbol, Number]]:
+        return self.uarm_ik.eval(Xe, Ye, Ze, phi)
 
     def to_latrix(self, matrix_type: str, matrix_index: str) -> str:
         return to_latrix(matrix_type, self.direct_kinematics[matrix_index])

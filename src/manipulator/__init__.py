@@ -20,5 +20,4 @@ from .symbols import *
 from .utils import to_latrix
 
 from .manipulator import Manipulator
-from .manipulator import ManualInverseKinematics
-
+from .manipulator import UArmInverseKinematics
